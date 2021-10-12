@@ -14,7 +14,7 @@
     "svelte": "^3.42.4",
     "marked": "^3.0.2",
     "cbytes": "^1.0.2",
-    "font-awesome-filetypes": "^2.1.0",
+    "font-awesome-filetypes": "^2.1.0"
   },
   "bundleDependencies": [],
   "deprecated": false,
