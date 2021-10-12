@@ -1,0 +1,27 @@
+{
+  "author": {
+    "name": "Gergely Laborci"
+  },
+  "dependencies": {
+    "@creativebulma/bulma-divider": "^1.1.0",
+    "@fortawesome/fontawesome-free": "^5.15.3",
+    "bulma": "^0.9.3",
+    "bulma-prefers-dark": "*",
+    "bulmaswatch": "^0.8.1",
+    "font-awesome-animation": "^1.1.1",
+    "font-awesome-filetypes": "^2.1.0",
+    "svelma": "^0.4.5",
+    "svelte": "^3.42.4",
+    "marked": "^3.0.2",
+    "cbytes": "^1.0.2",
+    "font-awesome-filetypes": "^2.1.0",
+  },
+  "bundleDependencies": [],
+  "deprecated": false,
+  "description": "",
+  "license": "ISC",
+  "name": "gold-admin",
+  "scripts": { },
+  "version": "1.1.0",
+  "keywords": []
+}
