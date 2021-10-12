@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {I_AuthApi} from "./auth/auth-api.interface";
+	import type I_AuthApi from "./auth/auth-api.interface";
 	import ListManager from "./app/list-manager";
 	import MenuItem from "./app/menu-item";
 	import options from "./options";

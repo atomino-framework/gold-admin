@@ -1,12 +1,12 @@
 <script lang="ts">
 	import options from "../options";
 	import {Input} from "svelma"
-	import copy from "../../copy";
+	import Clipboard from "../../clipboard";
 	import type Control from "./control";
 	import Page from "../../form/form-page";
 
-	export let page: Page;
 
+	export let page: Page;
 	export let control: Control;
 	export let item;
 	export let onChange: Function;
@@ -92,10 +92,10 @@
 			<div class="control">
 				<button on:click={()=>add(item.key)} class="button is-primary is-small">{@html options.combobox.add.icon.Tag('fa-fw')}</button>
 			</div>
-			<div class="control is-expanded py-0 has-background-link-dark is-unselectable" on:dblclick={()=>copy(item.value)}>
+			<div class="control is-expanded py-0 has-background-link-dark is-unselectable" on:dblclick={()=>Clipboard.copy(item.value)}>
 				<span class="input px-4 is-size-7 has-text-primary">{item.value}</span>
 			</div>
-			<div class="control py-0 has-background-link-dark is-unselectable" on:dblclick={()=>copy(item.key)}>
+			<div class="control py-0 has-background-link-dark is-unselectable" on:dblclick={()=>Clipboard.copy(item.key)}>
 				<span class="input px-2 is-size-7 has-text-primary-dark">{item.key}</span>
 			</div>
 		</span>
@@ -109,10 +109,10 @@
 			<div class="control">
 				<button on:click={()=>remove(item.key)} class="button is-danger is-small">{@html options.combobox.remove.icon.Tag('fa-fw')}</button>
 			</div>
-			<div class="control py-0 has-background-link-dark" on:dblclick={()=>copy(item.value)}>
+			<div class="control py-0 has-background-link-dark" on:dblclick={()=>Clipboard.copy(item.value)}>
 				<span class="input px-4 is-size-7 has-text-white is-unselectable">{item.value}</span>
 			</div>
-			<div class="control py-0 has-background-link-dark" on:dblclick={()=>copy(item.key)}>
+			<div class="control py-0 has-background-link-dark" on:dblclick={()=>Clipboard.copy(item.key)}>
 				<span class="input px-2 is-size-7 is-unselectable">{item.key}</span>
 			</div>
 			{#if control.form}

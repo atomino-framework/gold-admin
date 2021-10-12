@@ -1,12 +1,10 @@
 export default class FaIcon {
-
 	static s(icon: string): FaIcon {return new FaIcon('fas', icon);}
 	static r(icon: string): FaIcon {return new FaIcon('far', icon);}
 	static l(icon: string): FaIcon {return new FaIcon('fal', icon);}
 	static b(icon: string): FaIcon {return new FaIcon('fab', icon);}
 	static d(icon: string): FaIcon {return new FaIcon('fad', icon);}
-
-
+	
 	constructor(public pack: string, public icon: string) {
 		if (this.icon.substr(0, 3) === 'fa-') this.icon = this.icon.substr(3);
 	}

@@ -3,7 +3,7 @@
 	import {Button, Icon} from "svelma";
 	import type {Writable} from "svelte/store";
 	import type Form from "../form";
-	import copy from "../../copy";
+	import Clipboard from "../../clipboard";
 
 	import options  from "../options";
 
@@ -30,7 +30,8 @@
 			</Button>
 		{/if}
 	</div>
-	<div class="m-2 area-icon" on:dblclick={()=>$id ? copy($id) : null}>
+	<div class="m-2 area-icon" on:dblclick={()=>$id ? Clipboard.copy($id) : null}>
+	<div class="m-2 area-icon" >
 		<Icon pack={$icon.pack} icon={$icon.icon} size="is-medium"/>
 	</div>
 	<div class="is-size-6 area-title has-text-weight-bold">{$title}</div>

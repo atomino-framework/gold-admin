@@ -3,7 +3,7 @@
 	import {Modal} from "../../app/modal-manager";
 	import ModalComponent from "../../app/components/modal.svelte"
 	import ImageModal from "./image-modal.svelte"
-	import copy from "../../copy";
+	import Clipboard from "../../clipboard";
 	import {onMount} from "svelte";
 	import options from "../options";
 
@@ -69,7 +69,7 @@
 				</tr>
 				<tr>
 					<td class="px-2 py-1">url</td>
-					<td class="px-2 py-1 is-unselectable is-clickable" colspan="2" on:dblclick={()=>copy(file.url)}>{file.url}</td>
+					<td class="px-2 py-1 is-unselectable is-clickable" colspan="2" on:dblclick={()=>Clipboard.copy(file.url)}>{file.url}</td>
 				</tr>
 				<tr>
 					<td class="px-2 py-1">file size</td>
