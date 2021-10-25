@@ -14,8 +14,8 @@ export default class FormApi implements I_FormApi {
 	create(item: any): Promise<false | null | number> {
 		return fetch(this.apiBase + "/create", {method: "POST", body: JSON.stringify({item}), headers: this.headers}).then(handleFetch);
 	}
-	update(item: any): Promise<false | null | number> {
-		return fetch(this.apiBase + "/update/" + item.id, {method: "POST", body: JSON.stringify({item}), headers: this.headers}).then(handleFetch);
+	update(id:number, item: any): Promise<false | null | number> {
+		return fetch(this.apiBase + "/update/" + id, {method: "POST", body: JSON.stringify({item}), headers: this.headers}).then(handleFetch);
 	}
 	delete(id: number): Promise<boolean> {
 		return fetch(this.apiBase + "/delete/" + id, {method: "POST", headers: this.headers}).then(handleFetch);

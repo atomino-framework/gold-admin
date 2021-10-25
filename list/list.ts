@@ -68,17 +68,16 @@ export default abstract class List extends AbstractList {
 		this.buttons.push(button);
 	}
 
-	public open(item: any) {
+	public open(id: number) {
 		// @ts-ignore
-		this.listManager!.pageManager!.add(new FormPage(new this.form(item.id)));
+		this.listManager!.pageManager!.add(new FormPage(new this.form(id)));
 	}
 
 	async attached(listManager: ListManager): Promise<any> {
 		await super.attached(listManager);
 		if (this.fetchOptions) await this.setOptions();
-
-		if (this.options.sortings !== null) this.sorting = '+' + Object.keys(this.options.sortings)[0];
-		if (this.options.views !== null) this.view = Object.keys(this.options.views)[0];
+		if (this.options.sortings !== false) this.sorting = '+' + Object.keys(this.options.sortings)[0];
+		if (this.options.views !== false) this.view = Object.keys(this.options.views)[0];
 		await this.reload();
 	}
 

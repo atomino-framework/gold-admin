@@ -100,7 +100,7 @@ export default abstract class Form {
 		this.page!.loading = true;
 		let item = get(this.$item);
 		try {
-			let id1 = await (this.id === null ? this.api!.create(item) : this.api!.update(item));
+			let id1 = await (this.id === null ? this.api!.create(item) : this.api!.update(this.id, item));
 			if (typeof id1 === "number") this.id = id1;
 			toast.success("Item saved");
 			this.reloadList();
