@@ -16,6 +16,7 @@
 	let loading: Writable<boolean> = page.$loading;
 	let item = form.$item;
 	let errors = form.$errors;
+	let sections = form.$sections;
 	//let modal = form.$modal;
 
 </script>
@@ -23,7 +24,7 @@
 <Header loading={loading} form={form}/>
 
 <div class="columns m-0 p-0 is-multiline">
-	{#each form.sections as section}
+	{#each $sections as section}
 		<Section section={section} item={item} onChange={()=>form.changed=true} errors={errors} page={page}/>
 	{/each}
 </div>
