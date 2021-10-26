@@ -1,3 +1,5 @@
+import type I_ListOptions from "./list-options.interface";
+import type I_ListResult from "./list-result.interface";
 import OAuthStore from "../auth/oauth-store";
 import handleFetch from "../handle-fetch";
 import type I_ListApi from "./list-api.interface";
@@ -5,9 +7,9 @@ import AbstractApi from "../abstract-api"
 
 export default class ListApi extends AbstractApi implements I_ListApi {
 
-	getOptions(): Promise<any> { return fetch(this.apiBase + '/list/options', {method: "POST", headers: this.headers});}
-	get(pagesize: number, page: number, view: string | null, sorting: string | null, quicksearch: string, filter: any): Promise<any> {
-		return fetch(this.apiBase + '/list/get', {
+	getOptions(): Promise<I_ListOptions> { return fetch(this.url + '/list/options', {method: "POST", headers: this.headers}).then(handleFetch);}
+	get(pagesize: number, page: number, view: string | null, sorting: string | null, quicksearch: string, filter: any): Promise<I_ListResult> {
+		return fetch(this.url + '/list/get', {
 				method: "POST",
 				body: JSON.stringify({pagesize, page, sorting, view, quicksearch, filter}),
 				headers: this.headers

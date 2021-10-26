@@ -16,16 +16,16 @@ export default abstract class Form {
 	static buttons: Array<{ icon: FaIcon, action: (form: Form) => void, onlyIfExists: boolean }> = [];
 	static icon: FaIcon;
 	static api: I_FormApi;
-	static list: (() => typeof List | Array<typeof List>) | null;
-	public list: typeof List | Array<typeof List> | null;
+	static list: Array<typeof List> = [];
+
+	public list: Array<typeof List> = [];
 	public api: I_FormApi | null = null;
 	public buttons: Array<FormButton> = [];
 
 	constructor(id: number | string | null = null) {
 		if (typeof id === "string") id = parseInt(id);
 		this.id = id;
-		let list = (this.constructor as typeof Form).list;
-		this.list = list === null ? null : list();
+		this.list = (this.constructor as typeof Form).list;
 		this.api = (this.constructor as typeof Form).api;
 		this.icon = (this.constructor as typeof Form).icon;
 		for (let button of (this.constructor as typeof Form).buttons) {
@@ -148,23 +148,17 @@ export default abstract class Form {
 	}
 
 	protected reloadList() {
-		let list: typeof List | Array<typeof List> | null = this.list;
-		if (list === null) return;
-		if (list instanceof Array) {
-			for (let l of list) {
-				(this.page!.pageManager!.listManager!.getList(l.id) as List)?.reload();
-			}
-		} else {
+		for (let list of this.list) {
 			(this.page!.pageManager!.listManager!.getList(list.id) as List)?.reload();
 		}
 	}
 
 }
 
-export function form(icon: FaIcon, api: I_FormApi, list: (() => typeof List | Array<typeof List>) | null = null) {
+export function form(icon: FaIcon, api: I_FormApi) {
 	return function (constructor: typeof Form) {
 		Object.defineProperty(constructor, 'icon', {value: icon, writable: true});
-		Object.defineProperty(constructor, 'list', {value: list, writable: true});
+		Object.defineProperty(constructor, 'list', {value: [], writable: true});
 		Object.defineProperty(constructor, 'api', {value: api, writable: true});
 	}
 }

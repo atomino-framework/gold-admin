@@ -8,12 +8,12 @@ export default class EntityMapApi extends AbstractApi implements I_EntityMapApi 
 
 	async get(value: Array<number> | number): Promise<Array<I_EntityMap>> {
 		if (typeof value === "number") value = [value];
-		let result = await fetch(this.apiBase + '/select/get', {method: "POST", body: JSON.stringify({value}), headers: this.headers})
+		let result = await fetch(this.url + '/select/get', {method: "POST", body: JSON.stringify({value}), headers: this.headers})
 		return await result.json();
 	}
 
 	async search(search: string): Promise<Array<I_EntityMap>> {
-		let result = await fetch(this.apiBase + '/select/search', {method: "POST", body: JSON.stringify({search}), headers: this.headers})
+		let result = await fetch(this.url + '/select/search', {method: "POST", body: JSON.stringify({search}), headers: this.headers})
 		return await result.json();
 	}
 }

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type Page from "../../form/form-page";
 	import marked from "marked"
-	import Control from "./control"
+	import type Control from "./control"
 
 	export let page: Page;
+	page;
 
 	export let control: Control;
 	export let item;

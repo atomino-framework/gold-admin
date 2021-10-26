@@ -1,3 +1,4 @@
+import type I_ListResult from "gold-admin/list/list-result.interface";
 import type {SvelteComponent} from "svelte";
 import {get, writable, Writable} from "svelte/store";
 import AbstractList from "../app/abstract-list";
@@ -29,12 +30,11 @@ export default abstract class List extends AbstractList {
 	static icon: FaIcon;
 	static title: string;
 	static api: I_ListApi;
-	static form: () => typeof Form;
+	static form: typeof Form;
 	static buttons: Array<{ icon: FaIcon, action: (list: List) => void }> = [];
 
 	get id(): string {
-		// @ts-ignore
-		return this.constructor.id;
+		return (this.constructor as typeof List).id;
 	}
 
 	public options: I_ListOptions = {
@@ -58,7 +58,7 @@ export default abstract class List extends AbstractList {
 	get icon(): FaIcon { return (this.constructor as typeof List).icon;}
 	get title(): string { return (this.constructor as typeof List).title;}
 	get api(): I_ListApi {return (this.constructor as typeof List).api;}
-	get form(): typeof Form {return (this.constructor as typeof List).form();}
+	get form(): typeof Form {return (this.constructor as typeof List).form;}
 	get fetchOptions(): boolean {return (this.constructor as typeof List).fetchOptions;}
 
 	get component(): typeof SvelteComponent { return CList;}
@@ -83,11 +83,11 @@ export default abstract class List extends AbstractList {
 
 	async setOptions(): Promise<any> {
 		const res = await this.api.getOptions();
-		this.options = Object.assign(this.options, await handleFetch(res));
+		this.options = Object.assign(this.options, res);
 	}
 
 	async reload() {
-		const data = await this.api!.get(this.options.pagesize, get(this.$page), this.view, this.sorting, this.quicksearch, this.filter);
+		const data: I_ListResult = await this.api!.get(this.options.pagesize, get(this.$page), this.view, this.sorting, this.quicksearch, this.filter);
 		this.$items.set(data.items);
 		this.$count.set(data.count);
 		this.$page.set(data.page);
@@ -115,12 +115,14 @@ export function button(icon: FaIcon | { icon: FaIcon, action: (list: List) => vo
 	}
 }
 
-export function list(title: string, icon: FaIcon, api: I_ListApi, form: () => typeof Form, fetchOptions: boolean = false) {
+export function list(title: string, icon: FaIcon, api: I_ListApi, form: typeof Form, fetchOptions: boolean = false, listenToForms: Array<typeof Form> = []) {
 	return function (constructor: typeof List) {
 		Object.defineProperty(constructor, 'icon', {value: icon, writable: true});
 		Object.defineProperty(constructor, 'title', {value: title, writable: true});
 		Object.defineProperty(constructor, 'api', {value: api, writable: true});
 		Object.defineProperty(constructor, 'form', {value: form, writable: true});
 		Object.defineProperty(constructor, 'fetchOptions', {value: fetchOptions, writable: true});
+		if (listenToForms.length === 0) listenToForms = [form];
+		for (let listenToForm of listenToForms) listenToForm.list.push(constructor)
 	}
 }

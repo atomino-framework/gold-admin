@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Control from "./control";
+	import type Control from "./control";
 	import {Input} from "svelma"
 	import type Page from "../../form/form-page";
 
