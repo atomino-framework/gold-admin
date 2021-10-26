@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type Control, {IOption} from "./control";
+	import type Control from "./control";
+	import type I_OptionSet from "../option-set.interface"
 	import type Page from "../../form/form-page";
 	import options from "../options";
 
@@ -13,7 +14,7 @@
 	let loading = null;
 
 	if (control.api !== null) {
-		loading = control.api.get(page.form.id).then((res: Array<IOption>) => optionSet = res);
+		loading = control.api.get(page.form.id).then((res: Array<I_OptionSet>) => optionSet = res);
 	}
 </script>
 

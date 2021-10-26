@@ -1,8 +1,8 @@
 <script lang="ts">
 	import FaIcon from "../../fa-icon";
 	import type {Writable} from "svelte/store";
-	import type Form from "../../src/form/form";
-	import type EntityPage from "../../src/form/form-page";
+	import type Form from "../form";
+	import type EntityPage from "../form-page";
 
 	import Header from "./form-page-header.svelte"
 	import Section from "./form-section.svelte"
