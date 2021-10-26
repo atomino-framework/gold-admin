@@ -1,10 +1,9 @@
+import AbstractApi from "../abstract-api";
+import OAuthStore from "../auth/oauth-store";
 import type I_FormApi from "./form-api.interface";
 import handleFetch from "../handle-fetch";
 
-export default class FormApi implements I_FormApi {
-
-	constructor(protected apiBase: string, protected headers: HeadersInit = {}) {}
-
+export default class FormApi extends AbstractApi implements I_FormApi {
 	get(id: number): Promise<any> {
 		return fetch(this.apiBase + "/get/" + id, {method: "POST", headers: this.headers}).then(handleFetch);
 	}

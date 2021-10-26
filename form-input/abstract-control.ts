@@ -14,17 +14,17 @@ export default class AbstractControl {
 
 	get component(): typeof SvelteComponent { return (this.constructor as typeof AbstractControl).component;}
 
-	Hint(hint: string): this {
+	setHint(hint: string): this {
 		this.hint = hint;
 		return this;
 	}
 
-	Layout(layout: "column" | "row"): this {
+	setLayout(layout: "column" | "row"): this {
 		this.layout = layout;
 		return this;
 	}
 
-	Role(role: string | Array<string>): this {
+	setRole(role: string | Array<string>): this {
 		this.role = typeof role === "string" ? [role] : role;
 		return this;
 	}

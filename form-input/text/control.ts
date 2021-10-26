@@ -8,14 +8,9 @@ export default class TextControl extends AbstractInput {
 	public code:boolean = false;
 	public markdown: boolean = false;
 
-	Code():this{
-		this.code = true;
-		return this;
-	}
-
-	Markdown():this{
-		this.code = true;
-		this.markdown = true;
+	setStyle(type: "markdown"|"code"):this{
+		if(type === "code" || type === "markdown") this.code = true;
+		if(type === "markdown") this.markdown = true;
 		return this;
 	}
 }
