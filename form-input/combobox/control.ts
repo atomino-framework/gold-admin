@@ -1,5 +1,4 @@
 import EntityMapApi from "../entity-map-api";
-import type I_EntityMap from "../entity-map.interface";
 import type I_EntityMapApi from "../entity-map-api.interface";
 import type Form from "../../form/form";
 import AbstractControl, {component, layout} from "../abstract-control";

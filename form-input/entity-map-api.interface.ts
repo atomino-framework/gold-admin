@@ -1,6 +1,6 @@
-import type I_EntityMap from "./entity-map.interface";
+import type I_OptionSet from "./option-set.interface";
 
-export default interface I_EntityMapApi{
-	search(search: string): Promise<Array<I_EntityMap>>;
-	get(value:Array<number>|number):Promise<Array<I_EntityMap>>;
+export default interface I_EntityMapApi {
+	get(value: Array<number | string> | number | string, id: number | string | null): Promise<Array<I_OptionSet>>;
+	search(search: string, id: number | string | null): Promise<Array<I_OptionSet>>;
 }
