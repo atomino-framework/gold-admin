@@ -1,7 +1,6 @@
-import type I_Options from "./options.interface";
 import FaIcon from "./../fa-icon";
 
-let options: I_Options = {
+let options = {
 	title: "Admin",
 	input: {
 		login: {
@@ -16,6 +15,24 @@ let options: I_Options = {
 	button: {
 		login: {
 			text: "Login"
+		}
+	},
+	api: {
+		auth: {
+			host: "",
+			urlPostfix: {
+				get: "/get",
+				login: "/login",
+				logout: "/logout"
+			}
+		},
+		oauth: {
+			appKey: "",
+			host: "",
+			urlPostfix: {
+				get: "/get",
+				login: "/login"
+			}
 		}
 	}
 };

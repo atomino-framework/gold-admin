@@ -1,13 +1,13 @@
 import FaIcon from "../fa-icon";
 
 let options = {
-	select:{
+	select: {
 		downloading: {icon: FaIcon.s('spinner').anim.spin()}
 	},
-	checkboxes:{
+	checkboxes: {
 		downloading: {icon: FaIcon.s('spinner').anim.spin()}
 	},
-	radio:{
+	radio: {
 		downloading: {icon: FaIcon.s('spinner').anim.spin()}
 	},
 	number: {
@@ -19,6 +19,18 @@ let options = {
 		search: {icon: FaIcon.s("search")},
 		remove: {icon: FaIcon.s("times")},
 		link: {icon: FaIcon.s("arrow-right")},
+	},
+	api: {
+		optionSet: {
+			host: ""
+		},
+		entityMap: {
+			host: "",
+			urlPostfix: {
+				get: "/get",
+				search: "/search"
+			}
+		}
 	}
 };
 

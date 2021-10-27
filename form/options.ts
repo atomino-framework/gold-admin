@@ -7,6 +7,16 @@ let options = {
 		delete: {icon: FaIcon.s("trash-alt")},
 		reload: {icon: FaIcon.s("sync-alt")},
 		save: {icon: FaIcon.s("save")}
+	},
+	api:{
+		host: "",
+		urlPostfix: {
+			get: "/get",
+			blank: "/blank",
+			create: "/create",
+			update: "/update",
+			delete: "/delete",
+		}
 	}
 };
 

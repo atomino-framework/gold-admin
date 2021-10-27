@@ -5,7 +5,7 @@ import form from "./form/options";
 import input from "./form-input/options";
 
 let options = {
-	api:{host: ''},
+	api:{host: ""},
 	app,
 	auth,
 	list,

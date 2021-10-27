@@ -1,5 +1,6 @@
-import {handleOptionSetResult} from "gold-admin/form-input/option-set.interface";
-import handleFetch from "gold-admin/handle-fetch";
+import {handleOptionSetResult} from "./option-set.interface";
+import handleFetch from "../handle-fetch";
+import options from "./options";
 import type I_OptionSet from "./option-set.interface";
 import type I_EntityMapApi from "./entity-map-api.interface";
 import AbstractApi from "../abstract-api";
@@ -8,9 +9,10 @@ export default class EntityMapApi extends AbstractApi implements I_EntityMapApi 
 
 	static factory(url: string): I_EntityMapApi {return new this(url)}
 
-	public urlPostfix = {
-		get: "/get",
-		search: "/search"
+	declare public urlPostfix: { get: string, search: string }
+
+	constructor(url: string, headers: Object | (() => Object) = {}) {
+		super(url, headers, options.api.entityMap.host, options.api.entityMap.urlPostfix);
 	}
 
 	async get(value: Array<number | string> | number | string, id: number | string | null): Promise<Array<I_OptionSet>> {

@@ -8,6 +8,13 @@ let options = {
 	pager: {
 		right: {icon: FaIcon.s("chevron-right")},
 		left: {icon: FaIcon.s("chevron-left")},
+	},
+	api: {
+		host: "",
+		urlPostfix: {
+			get: "/get",
+			getOptions: "/options"
+		}
 	}
 };
 

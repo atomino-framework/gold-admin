@@ -1,4 +1,5 @@
-import type I_ListResult from "gold-admin/list/list-result.interface";
+import ListApi from "./list-api";
+import type I_ListResult from "./list-result.interface";
 import type {SvelteComponent} from "svelte";
 import {get, writable, Writable} from "svelte/store";
 import AbstractList from "../app/abstract-list";
@@ -114,11 +115,11 @@ export function button(icon: FaIcon | { icon: FaIcon, action: (list: List) => vo
 	}
 }
 
-export function list(title: string, icon: FaIcon, api: I_ListApi, form: typeof Form, fetchOptions: boolean = false, listenToForms: Array<typeof Form> = []) {
+export function list(title: string, icon: FaIcon, api: I_ListApi|string, form: typeof Form, fetchOptions: boolean = false, listenToForms: Array<typeof Form> = []) {
 	return function (constructor: typeof List) {
 		Object.defineProperty(constructor, 'icon', {value: icon, writable: true});
 		Object.defineProperty(constructor, 'title', {value: title, writable: true});
-		Object.defineProperty(constructor, 'api', {value: api, writable: true});
+		Object.defineProperty(constructor, 'api', {value: typeof api === "string" ? new ListApi(api) : api, writable: true});
 		Object.defineProperty(constructor, 'form', {value: form, writable: true});
 		Object.defineProperty(constructor, 'fetchOptions', {value: fetchOptions, writable: true});
 		if (listenToForms.length === 0) listenToForms = [form];

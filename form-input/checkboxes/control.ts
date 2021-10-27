@@ -14,10 +14,9 @@ export default class CheckboxesControl extends AbstractControl {
 		return this;
 	}
 
-	public api: I_OptionSetApi|null = null;
-	setApi(api: I_OptionSetApi|string): this {
-		if(typeof api === "string") api = OptionSetApi.factory(api);
-		this.api = api;
+	public api: I_OptionSetApi | null = null;
+	setApi(api: I_OptionSetApi | string): this {
+		this.api = typeof api === "string" ? api = new OptionSetApi(api) : api;
 		return this;
 	}
 }

@@ -3,18 +3,17 @@ import user from "./user";
 import type I_User from "./user.interface";
 import handleFetch from "../handle-fetch";
 import AbstractApi from "../abstract-api";
+import options from "./options";
 
 
 export default class AuthApi extends AbstractApi implements I_AuthApi {
 
-	constructor(url: string, private onLogin: Function | null = null) { super(url) }
+	declare public urlPostfix: { get: string, login: string, logout: string };
 
-	public urlPostfix = {
-		get: "/get",
-		login: "/login",
-		logout: "/logout"
+	constructor(url: string, private onLogin: Function | null = null, headers: Object | (() => Object) = {}) {
+		super(url, headers, options.api.auth.host, options.api.auth.urlPostfix);
 	}
-	
+
 	async get(): Promise<any> {
 		return fetch(this.url + this.urlPostfix.get, {method: "POST"}).then(handleFetch).then(res => {
 			user.update((user: I_User | null) => {
@@ -25,11 +24,11 @@ export default class AuthApi extends AbstractApi implements I_AuthApi {
 	}
 
 	async login(login: string, password: string): Promise<any> {
-		return fetch(this.url  + this.urlPostfix.login, {method: "POST", body: JSON.stringify({login, password})}).then(handleFetch).then(res => this.get());
+		return fetch(this.url + this.urlPostfix.login, {method: "POST", body: JSON.stringify({login, password})}).then(handleFetch).then(res => this.get());
 	}
 
 	async logout(): Promise<any> {
-		return fetch(this.url  + this.urlPostfix.logout, {method: "POST"}).then(handleFetch).then(res => this.get());
+		return fetch(this.url + this.urlPostfix.logout, {method: "POST"}).then(handleFetch).then(res => this.get());
 	}
 
 }

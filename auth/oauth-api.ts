@@ -1,3 +1,4 @@
+import options from "./options";
 import AbstractApi from "../abstract-api";
 import type I_AuthApi from "./auth-api.interface";
 import user from "./user";
@@ -7,11 +8,13 @@ import OAuthStore from "./oauth-store"
 
 export default class OAuthApi extends AbstractApi implements I_AuthApi {
 
-	constructor(url: string, private appKey: string, private onLogin: Function | null = null) { super(url); }
+	declare public urlPostfix: { get: string, login: string };
 
-	public urlPostfix = {
-		get: "/get",
-		login: "/login"
+	protected appKey: string;
+
+	constructor(url: string, private onLogin: Function | null = null, headers: Object | (() => Object) = {}) {
+		super(url, headers, options.api.oauth.host, options.api.oauth.urlPostfix);
+		this.appKey = options.api.oauth.appKey;
 	}
 
 	async get(): Promise<any> {

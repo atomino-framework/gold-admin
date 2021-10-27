@@ -20,6 +20,16 @@ let options = {
 	},
 	filetype: {
 		family: "fas"
+	},
+	api: {
+		host: "",
+		urlPostfix: {
+			get: "/get",
+			remove: "/remove-file",
+			upload: "/upload",
+			save: "/save-file-details",
+			move: "/move-file",
+		}
 	}
 };
 

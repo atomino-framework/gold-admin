@@ -1,3 +1,4 @@
+import FormApi from "./form-api";
 import Confirm from "./components/confirm.svelte";
 import type I_FormApi from "./form-api.interface";
 import options from "./options";
@@ -105,7 +106,7 @@ export default abstract class Form {
 			toast.success("Item saved");
 			this.reloadList();
 			return this.loadItem();
-		} catch (e:any) {
+		} catch (e: any) {
 			if (e.code === 422) this.errors = e.messages;
 		} finally {
 			this.page!.loading = false;
@@ -131,12 +132,12 @@ export default abstract class Form {
 						modal.close();
 						this.page!.loading = true;
 						if (typeof this.id !== 'number') throw "ERROR";
-						try{
+						try {
 							await this.api!.delete(this.id);
 							this.reloadList();
 							this.page?.pageManager?.remove(this.page);
-						}catch (exception){
-						}finally {
+						} catch (exception) {
+						} finally {
 							this.page!.loading = false;
 						}
 					}
@@ -155,11 +156,11 @@ export default abstract class Form {
 
 }
 
-export function form(icon: FaIcon, api: I_FormApi) {
+export function form(icon: FaIcon, api: I_FormApi | string) {
 	return function (constructor: typeof Form) {
 		Object.defineProperty(constructor, 'icon', {value: icon, writable: true});
 		Object.defineProperty(constructor, 'list', {value: [], writable: true});
-		Object.defineProperty(constructor, 'api', {value: api, writable: true});
+		Object.defineProperty(constructor, 'api', {value: typeof api === "string" ? new FormApi(api) : api, writable: true});
 	}
 }
 

@@ -5,6 +5,7 @@
 	import options from "./options";
 	import PageManager from "./app/page-manager";
 	import user from "./auth/user";
+	import Favicon from "./favicon"
 
 	import AppFrame from "./app/components/app-frame.svelte";
 	import Login from "./auth/components/login.svelte"
@@ -18,8 +19,9 @@
 	listManager.pageManager = pageManager;
 
 	window.document.title = options.app.title;
-	document.body.style.backgroundColor = options.app.background.color;
-	document.body.style.backgroundImage = 'url("' + options.app.background.imageUrl + '")';
+	if(options.app.favicon !== "") Favicon.replace(options.app.favicon);
+	window.document.body.style.backgroundColor = options.app.background.color;
+	window.document.body.style.backgroundImage = 'url("' + options.app.background.imageUrl + '")';
 
 	let auth = authApi.get();
 </script>

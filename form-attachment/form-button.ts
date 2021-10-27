@@ -1,3 +1,4 @@
+import AttachmentApi from "./attachment-api";
 import {Modal} from "../app/modal-manager";
 import type I_AttachmentApi from "./attachment-api.interface";
 import {get} from "svelte/store";
@@ -5,7 +6,10 @@ import AttachmentModal from "./components/attachment-modal.svelte";
 import type Form from "../form/form";
 import options from "./options";
 
-export default function attachmentButton(api: I_AttachmentApi, visibleCollections: any) {
+export default function attachmentButton(api: I_AttachmentApi | string, visibleCollections: any) {
+
+	api = typeof api === "string" ? new AttachmentApi(api) : api;
+
 	for (let i in visibleCollections) if (visibleCollections.hasOwnProperty(i)) {
 		if (typeof visibleCollections[i] === 'string') {
 			visibleCollections[i] = {label: visibleCollections[i]}

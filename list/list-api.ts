@@ -1,3 +1,4 @@
+import options from "./options";
 import AbstractApi from "../abstract-api"
 import handleFetch from "../handle-fetch";
 import type I_ListApi from "./list-api.interface";
@@ -6,9 +7,10 @@ import type I_ListResult from "./list-result.interface";
 
 export default class ListApi extends AbstractApi implements I_ListApi {
 
-	public urlPostfix = {
-		get: "/get",
-		getOptions: "/options"
+	declare public urlPostfix: { get: string, getOptions: string }
+
+	constructor(url: string, headers: Object | (() => Object) = {}) {
+		super(url, headers, options.api.host, options.api.urlPostfix);
 	}
 
 	async getOptions(): Promise<I_ListOptions> { return fetch(this.url + this.urlPostfix.getOptions, {method: "POST", headers: this.headers}).then(handleFetch);}

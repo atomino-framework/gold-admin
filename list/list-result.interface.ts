@@ -1,5 +1,5 @@
-export default class I_ListResult{
-	public count:number;
-	public page:number;
-	public items:Array<Object>;
+export default interface I_ListResult{
+	count:number;
+	page:number;
+	items:Array<Object>;
 }

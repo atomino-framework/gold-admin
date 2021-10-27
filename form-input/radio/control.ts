@@ -17,8 +17,7 @@ export default class RadioControl extends AbstractInput {
 
 	public api: I_OptionSetApi | null = null;
 	setApi(api: I_OptionSetApi | string): this {
-		if (typeof api === "string") api = OptionSetApi.factory(api);
-		this.api = api;
+		this.api = typeof api === "string" ? api = new OptionSetApi(api) : api;
 		return this;
 	}
 }
