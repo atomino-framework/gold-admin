@@ -12,8 +12,8 @@ export default class OAuthApi extends AbstractApi implements I_AuthApi {
 
 	protected appKey: string;
 
-	constructor(url: string, private onLogin: Function | null = null, headers: Object | (() => Object) = {}) {
-		super(url, headers, options.api.oauth.host, options.api.oauth.urlPostfix);
+	constructor(url: string, private onLogin: Function | null = null) {
+		super(url, options.api.oauth.headers, options.api.oauth.host, options.api.oauth.urlPostfix);
 		this.appKey = options.api.oauth.appKey;
 	}
 
@@ -21,10 +21,7 @@ export default class OAuthApi extends AbstractApi implements I_AuthApi {
 		OAuthStore.restore();
 		return fetch(this.url + this.urlPostfix.get, {
 			method: "GET",
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + OAuthStore.access_token,
-			}
+			headers: this.headers
 		})
 			.then(handleFetch)
 			.then(res => {
@@ -38,13 +35,11 @@ export default class OAuthApi extends AbstractApi implements I_AuthApi {
 	}
 
 	async login(login: string, password: string): Promise<any> {
+		let headers = Object.assign({}, this.headers, {'Authorization': 'Basic ' + this.appKey});
 		return fetch(this.url + this.urlPostfix.login, {
 			method: "POST",
 			body: JSON.stringify({username: login, password, grant_type: "password"}),
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Basic ' + this.appKey,
-			}
+			headers
 		})
 			.then(handleFetch)
 			.then(res => {

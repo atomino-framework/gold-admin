@@ -24,7 +24,8 @@ let options = {
 				get: "/get",
 				login: "/login",
 				logout: "/logout"
-			}
+			},
+			headers:{}
 		},
 		oauth: {
 			appKey: "",
@@ -32,7 +33,8 @@ let options = {
 			urlPostfix: {
 				get: "/get",
 				login: "/login"
-			}
+			},
+			headers:{}
 		}
 	}
 };

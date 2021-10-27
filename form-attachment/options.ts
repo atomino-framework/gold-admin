@@ -29,7 +29,8 @@ let options = {
 			upload: "/upload",
 			save: "/save-file-details",
 			move: "/move-file",
-		}
+		},
+		headers:{}
 	}
 };
 

@@ -14,8 +14,8 @@ export default class FormApi extends AbstractApi implements I_FormApi {
 		delete: string,
 	}
 
-	constructor(url: string, headers: Object | (() => Object) = {}) {
-		super(url, headers, options.api.host, options.api.urlPostfix);
+	constructor(url: string) {
+		super(url, options.api.headers, options.api.host, options.api.urlPostfix);
 	}
 
 	async get(id: number): Promise<Object> {

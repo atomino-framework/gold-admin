@@ -10,8 +10,8 @@ export default class AuthApi extends AbstractApi implements I_AuthApi {
 
 	declare public urlPostfix: { get: string, login: string, logout: string };
 
-	constructor(url: string, private onLogin: Function | null = null, headers: Object | (() => Object) = {}) {
-		super(url, headers, options.api.auth.host, options.api.auth.urlPostfix);
+	constructor(url: string, private onLogin: Function | null = null) {
+		super(url, options.api.auth.headers, options.api.auth.host, options.api.auth.urlPostfix);
 	}
 
 	async get(): Promise<any> {
@@ -24,11 +24,11 @@ export default class AuthApi extends AbstractApi implements I_AuthApi {
 	}
 
 	async login(login: string, password: string): Promise<any> {
-		return fetch(this.url + this.urlPostfix.login, {method: "POST", body: JSON.stringify({login, password})}).then(handleFetch).then(res => this.get());
+		return fetch(this.url + this.urlPostfix.login, {method: "POST", headers: this.headers, body: JSON.stringify({login, password})}).then(handleFetch).then(res => this.get());
 	}
 
 	async logout(): Promise<any> {
-		return fetch(this.url + this.urlPostfix.logout, {method: "POST"}).then(handleFetch).then(res => this.get());
+		return fetch(this.url + this.urlPostfix.logout, {method: "POST", headers: this.headers}).then(handleFetch).then(res => this.get());
 	}
 
 }

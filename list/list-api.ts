@@ -9,8 +9,8 @@ export default class ListApi extends AbstractApi implements I_ListApi {
 
 	declare public urlPostfix: { get: string, getOptions: string }
 
-	constructor(url: string, headers: Object | (() => Object) = {}) {
-		super(url, headers, options.api.host, options.api.urlPostfix);
+	constructor(url: string) {
+		super(url, options.api.headers, options.api.host, options.api.urlPostfix);
 	}
 
 	async getOptions(): Promise<I_ListOptions> { return fetch(this.url + this.urlPostfix.getOptions, {method: "POST", headers: this.headers}).then(handleFetch);}

@@ -14,7 +14,8 @@ let options = {
 		urlPostfix: {
 			get: "/get",
 			getOptions: "/options"
-		}
+		},
+		headers:{}
 	}
 };
 

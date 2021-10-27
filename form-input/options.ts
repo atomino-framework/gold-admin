@@ -22,14 +22,16 @@ let options = {
 	},
 	api: {
 		optionSet: {
-			host: ""
+			host: "",
+			headers:{}
 		},
 		entityMap: {
 			host: "",
 			urlPostfix: {
 				get: "/get",
 				search: "/search"
-			}
+			},
+			headers:{}
 		}
 	}
 };

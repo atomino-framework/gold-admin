@@ -16,7 +16,8 @@ let options = {
 			create: "/create",
 			update: "/update",
 			delete: "/delete",
-		}
+		},
+		headers:{}
 	}
 };
 

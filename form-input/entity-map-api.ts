@@ -11,8 +11,8 @@ export default class EntityMapApi extends AbstractApi implements I_EntityMapApi 
 
 	declare public urlPostfix: { get: string, search: string }
 
-	constructor(url: string, headers: Object | (() => Object) = {}) {
-		super(url, headers, options.api.entityMap.host, options.api.entityMap.urlPostfix);
+	constructor(url: string) {
+		super(url, options.api.entityMap.headers, options.api.entityMap.host, options.api.entityMap.urlPostfix);
 	}
 
 	async get(value: Array<number | string> | number | string, id: number | string | null): Promise<Array<I_OptionSet>> {

@@ -13,8 +13,8 @@ export default class AttachmentApi extends AbstractApi implements I_AttachmentAp
 		move: string,
 	}
 
-	constructor(url: string, headers: Object | (() => Object) = {}) {
-		super(url, headers, options.api.host, options.api.urlPostfix);
+	constructor(url: string) {
+		super(url, options.api.headers, options.api.host, options.api.urlPostfix);
 	}
 
 
