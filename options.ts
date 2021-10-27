@@ -1,4 +1,3 @@
-import OAuthStore from "gold-admin/auth/oauth-store";
 import app from "./app/options";
 import auth from "./auth/options";
 import list from "./list/options";
@@ -7,10 +6,9 @@ import input from "./form-input/options";
 
 let options = {
 	api: {
-		host: "",
+		host: "/",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": () => OAuthStore.exists ? ("Bearer " + OAuthStore.access_token) : false
 		}
 	},
 	app,

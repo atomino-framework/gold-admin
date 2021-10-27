@@ -3,20 +3,12 @@ import AbstractApi from "../abstract-api";
 import handleFetch from "../handle-fetch";
 import type I_AttachmentApi from "./attachment-api.interface";
 
+//todo: return types
 export default class AttachmentApi extends AbstractApi implements I_AttachmentApi {
 
-	declare public urlPostfix: {
-		get: string,
-		remove: string,
-		upload: string,
-		save: string,
-		move: string,
-	}
+	declare public urlPostfix: { get: string, remove: string, upload: string, save: string, move: string, }
 
-	constructor(url: string) {
-		super(url, options.api.headers, options.api.host, options.api.urlPostfix);
-	}
-
+	constructor(url: string) { super(url, options.api.headers, options.api.host, options.api.urlPostfix);}
 
 	async get(id: number): Promise<Array<any>> {
 		return fetch(this.url + this.urlPostfix.get + '/' + id, {method: "POST", headers: this.headers}).then(handleFetch)

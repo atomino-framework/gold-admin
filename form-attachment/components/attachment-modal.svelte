@@ -17,7 +17,6 @@
 		fetch = api.get(id).then(res => {
 			$files = res.files;
 			$collections = res.collections;
-			console.log($collections)
 		})
 	}
 

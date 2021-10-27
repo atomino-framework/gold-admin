@@ -1,3 +1,5 @@
+import options from "../options";
+
 export default class OAuthStore {
 
 	static instance: OAuthStore | null = null;
@@ -32,3 +34,6 @@ export default class OAuthStore {
 
 	constructor(public access_token: string, public expires_in: number, public token_type: string, public scope: string | null = null, public refresh_token: string | null = null) {}
 }
+
+//@ts-ignore
+options.api.headers["Authorization"] = () => OAuthStore.exists ? ("Bearer " + OAuthStore.access_token) : false
