@@ -9,8 +9,14 @@ export default class AuthApi extends AbstractApi implements I_AuthApi {
 
 	constructor(url: string, private onLogin: Function | null = null) { super(url) }
 
-	get(): Promise<any> {
-		return fetch(this.url + '/get', {method: "POST"}).then(handleFetch).then(res => {
+	public urlPostfix = {
+		get: "/get",
+		login: "/login",
+		logout: "/logout"
+	}
+	
+	async get(): Promise<any> {
+		return fetch(this.url + this.urlPostfix.get, {method: "POST"}).then(handleFetch).then(res => {
 			user.update((user: I_User | null) => {
 				if (user === null && res !== null && this.onLogin !== null) this.onLogin();
 				return res;
@@ -18,12 +24,12 @@ export default class AuthApi extends AbstractApi implements I_AuthApi {
 		});
 	}
 
-	login(login: string, password: string): Promise<any> {
-		return fetch(this.url + '/login', {method: "POST", body: JSON.stringify({login, password})}).then(handleFetch).then(res => this.get());
+	async login(login: string, password: string): Promise<any> {
+		return fetch(this.url  + this.urlPostfix.login, {method: "POST", body: JSON.stringify({login, password})}).then(handleFetch).then(res => this.get());
 	}
 
-	logout(): Promise<any> {
-		return fetch(this.url + '/logout', {method: "POST"}).then(handleFetch).then(res => this.get());
+	async logout(): Promise<any> {
+		return fetch(this.url  + this.urlPostfix.logout, {method: "POST"}).then(handleFetch).then(res => this.get());
 	}
 
 }

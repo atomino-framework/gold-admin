@@ -6,9 +6,14 @@ import type I_ListResult from "./list-result.interface";
 
 export default class ListApi extends AbstractApi implements I_ListApi {
 
-	getOptions(): Promise<I_ListOptions> { return fetch(this.url + '/list/options', {method: "POST", headers: this.headers}).then(handleFetch);}
-	get(pagesize: number, page: number, view: string | null, sorting: string | null, quicksearch: string, filter: any): Promise<I_ListResult> {
-		return fetch(this.url + '/list/get', {
+	public urlPostfix = {
+		get: "/get",
+		getOptions: "/options"
+	}
+
+	async getOptions(): Promise<I_ListOptions> { return fetch(this.url + this.urlPostfix.getOptions, {method: "POST", headers: this.headers}).then(handleFetch);}
+	async get(pagesize: number, page: number, view: string | null, sorting: string | null, quicksearch: string, filter: any): Promise<I_ListResult> {
+		return fetch(this.url + this.urlPostfix.get, {
 				method: "POST",
 				body: JSON.stringify({pagesize, page, sorting, view, quicksearch, filter}),
 				headers: this.headers

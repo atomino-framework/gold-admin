@@ -7,12 +7,16 @@ import OAuthStore from "./oauth-store"
 
 export default class OAuthApi extends AbstractApi implements I_AuthApi {
 
-	constructor(url: string, private appKey: string, private onLogin: Function | null = null) { super(url);}
+	constructor(url: string, private appKey: string, private onLogin: Function | null = null) { super(url); }
 
+	public urlPostfix = {
+		get: "/get",
+		login: "/login"
+	}
 
-	get(): Promise<any> {
+	async get(): Promise<any> {
 		OAuthStore.restore();
-		return fetch(this.url + '/me', {
+		return fetch(this.url + this.urlPostfix.get, {
 			method: "GET",
 			headers: {
 				'Content-Type': 'application/json',
@@ -27,13 +31,11 @@ export default class OAuthApi extends AbstractApi implements I_AuthApi {
 					return res;
 				});
 				if (prevUser === null && res !== null && this.onLogin !== null) this.onLogin();
-			}).catch(() => {
-				user.set(null);
-			});
+			}).catch(() => user.set(null));
 	}
 
-	login(login: string, password: string): Promise<any> {
-		return fetch(this.url + '/oauth', {
+	async login(login: string, password: string): Promise<any> {
+		return fetch(this.url + this.urlPostfix.login, {
 			method: "POST",
 			body: JSON.stringify({username: login, password, grant_type: "password"}),
 			headers: {
@@ -48,7 +50,7 @@ export default class OAuthApi extends AbstractApi implements I_AuthApi {
 			}).catch(() => {});
 	}
 
-	logout(): Promise<any> {
+	async logout(): Promise<any> {
 		OAuthStore.drop();
 		this.get();
 		return Promise.resolve(true);

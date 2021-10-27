@@ -44,8 +44,7 @@ export default abstract class List extends AbstractList {
 		pagesize: 5
 	}
 
-	// @ts-ignore
-	public $items: Writable<Array<any>> = writable([]);
+	public $items: Writable<Array<Object>> = writable([]);
 	public $count: Writable<number> = writable(0);
 	public $page: Writable<number> = writable(1);
 

@@ -4,30 +4,37 @@ import type I_AttachmentApi from "./attachment-api.interface";
 
 export default class AttachmentApi extends AbstractApi implements I_AttachmentApi {
 
-	get(id: number): Promise<Array<any>> {
-		return fetch(this.url + '/attachment/get/' + id, {method: "POST", headers: this.headers}).then(handleFetch)
+	public urlPostfix = {
+		get: "/get",
+		remove: "/remove-file",
+		upload: "/upload",
+		save: "/save-file-details",
+		move: "/move-file",
 	}
 
-	removeFile(id: number, collection: string, filename: string): Promise<any> {
-		return fetch(this.url + '/attachment/remove-file/' + id, {method: "POST", headers: this.headers, body: JSON.stringify({filename, collection})}).then(handleFetch)
+	async get(id: number): Promise<Array<any>> {
+		return fetch(this.url + this.urlPostfix.get + '/' + id, {method: "POST", headers: this.headers}).then(handleFetch)
 	}
 
-	saveFileDetails(id: number, filename: string, data: any): Promise<any> {
-		return fetch(this.url + '/attachment/save-file-details/' + id, {method: "POST", headers: this.headers, body: JSON.stringify({filename, data})}).then(handleFetch)
+	async removeFile(id: number, collection: string, filename: string): Promise<any> {
+		return fetch(this.url + this.urlPostfix.remove + '/' + id, {method: "POST", headers: this.headers, body: JSON.stringify({filename, collection})}).then(handleFetch)
 	}
 
-	upload(id: number, collection: string, files: FileList): Promise<any> {
+	async saveFileDetails(id: number, filename: string, data: any): Promise<any> {
+		return fetch(this.url + this.urlPostfix.save + '/' + id, {method: "POST", headers: this.headers, body: JSON.stringify({filename, data})}).then(handleFetch)
+	}
+
+	async upload(id: number, collection: string, fileList: FileList): Promise<any> {
 		let jobs: Array<Promise<any>> = [];
-		// @ts-ignore
-		[...files].forEach((file) => {
+		Array.from(fileList).forEach((file) => {
 			let data = new FormData()
 			data.append('file', file)
 			data.append('collection', collection)
-			jobs.push(fetch(this.url + '/attachment/upload/' + id, {method: "POST", headers: this.headers, body: data}).then(handleFetch));
+			jobs.push(fetch(this.url + this.urlPostfix.upload + '/' + id, {method: "POST", headers: this.headers, body: data}).then(handleFetch));
 		})
 		return Promise.all(jobs);
 	}
-	moveFile(id: number, filename: string, source: string, target: string, position: number, copy: boolean): Promise<any> {
-		return fetch(this.url + '/attachment/move-file/' + id, {method: "POST", headers: this.headers, body: JSON.stringify({filename, source, target, position, copy})}).then(handleFetch)
+	async moveFile(id: number, filename: string, source: string, target: string, position: number, copy: boolean): Promise<any> {
+		return fetch(this.url + this.urlPostfix.move + '/' + id, {method: "POST", headers: this.headers, body: JSON.stringify({filename, source, target, position, copy})}).then(handleFetch)
 	}
 }
