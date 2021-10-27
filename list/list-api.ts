@@ -1,9 +1,8 @@
-import type I_ListOptions from "./list-options.interface";
-import type I_ListResult from "./list-result.interface";
-import OAuthStore from "../auth/oauth-store";
+import AbstractApi from "../abstract-api"
 import handleFetch from "../handle-fetch";
 import type I_ListApi from "./list-api.interface";
-import AbstractApi from "../abstract-api"
+import type I_ListOptions from "./list-options.interface";
+import type I_ListResult from "./list-result.interface";
 
 export default class ListApi extends AbstractApi implements I_ListApi {
 

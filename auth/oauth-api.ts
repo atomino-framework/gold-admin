@@ -7,7 +7,7 @@ import OAuthStore from "./oauth-store"
 
 export default class OAuthApi extends AbstractApi implements I_AuthApi {
 
-	constructor(apiBase: string, private appKey: string, private onLogin: Function | null = null) { super(apiBase);}
+	constructor(url: string, private appKey: string, private onLogin: Function | null = null) { super(url);}
 
 
 	get(): Promise<any> {

@@ -7,7 +7,7 @@ import AbstractApi from "../abstract-api";
 
 export default class AuthApi extends AbstractApi implements I_AuthApi {
 
-	constructor(apiBase: string, private onLogin: Function | null = null) { super(apiBase) }
+	constructor(url: string, private onLogin: Function | null = null) { super(url) }
 
 	get(): Promise<any> {
 		return fetch(this.url + '/get', {method: "POST"}).then(handleFetch).then(res => {

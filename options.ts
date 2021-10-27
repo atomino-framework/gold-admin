@@ -4,6 +4,13 @@ import list from "./list/options";
 import form from "./form/options";
 import input from "./form-input/options";
 
-let options = {app, auth, list, form, input}
+let options = {
+	api:{host: ''},
+	app,
+	auth,
+	list,
+	form,
+	input
+}
 
 export default options;

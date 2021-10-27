@@ -4,7 +4,7 @@ import AbstractApi from "../abstract-api";
 
 export default class EntityMapApi extends AbstractApi implements I_EntityMapApi {
 
-	static factory(apiBase: string): I_EntityMapApi {return new this(apiBase)}
+	static factory(url: string): I_EntityMapApi {return new this(url)}
 
 	async get(value: Array<number> | number): Promise<Array<I_EntityMap>> {
 		if (typeof value === "number") value = [value];
