@@ -21,6 +21,13 @@ let options = {
 	filetype: {
 		family: "fas"
 	},
+	features: {
+		rename: true,
+		editTitle: true,
+		moveFile: true,
+		imageEditor: true,
+		customProperties: true
+	},
 	api: {
 		host: "",
 		urlPostfix: {

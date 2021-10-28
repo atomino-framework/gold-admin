@@ -50,7 +50,7 @@
 			</div>
 		{/if}
 
-		{#if (card.buttons)}
+		{#if card.buttons && card.buttons.length}
 			<footer class="card-footer is-size-7">
 				{#each card.buttons as button}
 					<a href="#" class="card-footer-item p-2" on:click|stopPropagation={button.action}>

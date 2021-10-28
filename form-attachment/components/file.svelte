@@ -12,7 +12,6 @@
 
 	let icon;
 
-
 	$: icon = options.filetype.family + " " + getClassNameForExtension(file.name.split('.').pop())
 
 	function showDetailsModal() {

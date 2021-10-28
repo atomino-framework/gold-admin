@@ -67,9 +67,6 @@
 			</span>
 		</p>
 		<input bind:this={input} multiple type="file" style="display: none" on:change={()=>upload(name, input.files)}>
-		<!--				<button class="card-header-icon" on:click={()=>input.click()}>-->
-		<!--					{@html options.attachment.modal.upload.icon.Icon}-->
-		<!--				</button>-->
 	</header>
 	<div class="card-content p-3">
 		<div class="content is-flex is-flex-wrap-wrap">
@@ -100,7 +97,7 @@
 			</div>
 			{#each collection.files as file , index}
 				<div
-						draggable="true"
+						draggable={options.features.moveFile}
 						class="draggable"
 						class:over={over === file}
 						on:dragstart={(event)=>dragstart(file, index, event)}
