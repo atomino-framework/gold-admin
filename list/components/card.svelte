@@ -67,6 +67,9 @@
 </div>
 
 <style lang="scss">
+	.card:not(.inactive){
+		opacity:.8;
+	}
 	.card.inactive {
 		opacity: .6;
 	}

@@ -14,12 +14,13 @@ export default class AuthApi extends AbstractApi implements I_AuthApi {
 		super(url, options.api.auth.headers, options.api.auth.host, options.api.auth.urlPostfix);
 	}
 
-	async get(): Promise<any> {
+	async get(): Promise<I_User|null> {
 		return fetch(this.url + this.urlPostfix.get, {method: "POST"}).then(handleFetch).then(res => {
 			user.update((user: I_User | null) => {
 				if (user === null && res !== null && this.onLogin !== null) this.onLogin();
 				return res;
 			});
+			return res;
 		});
 	}
 

@@ -84,6 +84,11 @@
 				z-index: 1;
 				backdrop-filter: blur(3px);
 			}
+			> .footer {
+				border-top-right-radius: 0;
+				border-top-left-radius: 0;
+				z-index: 2;
+			}
 		}
 	}
 	article.notification {

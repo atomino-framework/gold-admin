@@ -17,20 +17,21 @@ export default class OAuthApi extends AbstractApi implements I_AuthApi {
 		this.appKey = options.api.oauth.appKey;
 	}
 
-	async get(): Promise<any> {
+	async get(): Promise<I_User|null> {
 		OAuthStore.restore();
 		return fetch(this.url + this.urlPostfix.get, {
 			method: "GET",
 			headers: this.headers
 		})
 			.then(handleFetch)
-			.then(res => {
+			.then((res) => {
 				let prevUser;
 				user.update((user: I_User | null) => {
 					prevUser = user;
 					return res;
 				});
 				if (prevUser === null && res !== null && this.onLogin !== null) this.onLogin();
+				return res;
 			}).catch(() => user.set(null));
 	}
 

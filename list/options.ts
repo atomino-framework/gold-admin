@@ -2,6 +2,7 @@ import FaIcon from "../fa-icon";
 
 let options = {
 	new: {icon: FaIcon.s("plus")},
+	quicksearch: {icon: FaIcon.s("search")},
 	filter: {icon: FaIcon.s("filter")},
 	info: {icon: FaIcon.s("info-circle")},
 	sort: {icon: FaIcon.s("sort")},

@@ -9,8 +9,8 @@ import type Form from "../form/form";
 import FormPage from "../form/form-page";
 import handleFetch from "../handle-fetch";
 import options from "../options";
-import CCard from "./components/card.svelte";
-import CList from "./components/list.svelte";
+import C_Card from "./components/card.svelte";
+import C_List from "./components/list.svelte";
 import type I_ListApi from "./list-api.interface";
 import ListButton from "./list-button";
 import type I_ListOptions from "./list-options.interface";
@@ -61,8 +61,9 @@ export default abstract class List extends AbstractList {
 	get form(): typeof Form {return (this.constructor as typeof List).form;}
 	get fetchOptions(): boolean {return (this.constructor as typeof List).fetchOptions;}
 
-	get component(): typeof SvelteComponent { return CList;}
-	get card(): typeof SvelteComponent { return CCard;}
+	get component(): typeof SvelteComponent { return C_List;}
+	get card(): typeof SvelteComponent { return C_Card;}
+	get filterComponent(): typeof SvelteComponent | null { return null; }
 
 	public addButton(button: ListButton) {
 		this.buttons.push(button);
@@ -115,7 +116,7 @@ export function button(icon: FaIcon | { icon: FaIcon, action: (list: List) => vo
 	}
 }
 
-export function list(title: string, icon: FaIcon, api: I_ListApi|string, form: typeof Form, fetchOptions: boolean = false, listenToForms: Array<typeof Form> = []) {
+export function list(title: string, icon: FaIcon, api: I_ListApi | string, form: typeof Form, fetchOptions: boolean = false, listenToForms: Array<typeof Form> = []) {
 	return function (constructor: typeof List) {
 		Object.defineProperty(constructor, 'icon', {value: icon, writable: true});
 		Object.defineProperty(constructor, 'title', {value: title, writable: true});
