@@ -17,7 +17,7 @@
 		<div class="column p-0 has-text-right">
 			{#each list.buttons as button}
 				<span class="icon is-clickable px-1" on:click={()=>button.action()}>
-					{@html button.icon.Icon}
+					{@html button.icon.tag}
 				</span>
 			{/each}
 		</div>
@@ -30,7 +30,6 @@
 			  {@html options.quicksearch.icon.tag}
 			</span>
 			<input class="has-text-centered input is-size-7" placeholder="quick search" bind:value={list.quicksearch} on:keyup={()=>list.reload()}/>
-
 		</div>
 
 	{/if}

@@ -3,18 +3,22 @@ export default interface I_OptionSet {
 	value: string | number
 }
 
-type valueLabelPair = { [key: string]: string };
+export type valueLabelPair = { [key: string]: string };
 
-export function objectToOptionSet(data: valueLabelPair): Array<I_OptionSet> {
+export function convertToOptionSet(data: valueLabelPair|Array<string>|Array<I_OptionSet>): Array<I_OptionSet> {
+	if(data instanceof Array){
+		data.forEach((item,index)=>{
+			if(typeof item === "string"){
+				(data as Array<I_OptionSet>)[index] = {value: item, label:item}
+			}
+		})
+		return data as Array<I_OptionSet>;
+	};
 	let result: Array<I_OptionSet> = [];
+	data = data as valueLabelPair;
 	for (let value in data) {
 		let label: string = data[value];
 		if (typeof label === "string") result.push({value, label});
 	}
 	return result;
-}
-
-export function handleOptionSetResult(result:Array<I_OptionSet>|valueLabelPair):Array<I_OptionSet>{
-	if(result instanceof Object) return objectToOptionSet(result as valueLabelPair);
-	else return result;
 }

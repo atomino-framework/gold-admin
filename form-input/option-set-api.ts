@@ -1,5 +1,5 @@
 import options from "./options";
-import {handleOptionSetResult} from "./option-set.interface";
+import {convertToOptionSet} from "./option-set.interface";
 import I_EntityMapApi from "./entity-map-api.interface";
 import type I_OptionSetApi from "./option-set-api.interface";
 import handleFetch from "../handle-fetch";
@@ -15,6 +15,6 @@ export default class OptionSetApi extends AbstractApi implements I_OptionSetApi 
 	async get(id: number | string | null): Promise<Array<I_OptionSet>> {
 		return fetch(this.url, {method: "POST", body: JSON.stringify({id}), headers: this.headers})
 			.then(handleFetch)
-			.then(handleOptionSetResult);
+			.then(convertToOptionSet);
 	}
 }

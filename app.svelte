@@ -19,7 +19,9 @@
 	listManager.pageManager = pageManager;
 
 	window.document.title = options.app.title;
-	if(options.app.favicon !== "") Favicon.replace(options.app.favicon);
+	if(options.app.favicon !== ""){
+		Favicon.replace(options.app.favicon);
+	}
 	window.document.body.style.backgroundColor = options.app.background.color;
 	window.document.body.style.backgroundImage = 'url("' + options.app.background.imageUrl + '")';
 

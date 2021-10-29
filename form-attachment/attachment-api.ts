@@ -1,7 +1,7 @@
-import options from "./options";
 import AbstractApi from "../abstract-api";
 import handleFetch from "../handle-fetch";
 import type I_AttachmentApi from "./attachment-api.interface";
+import options from "./options";
 import type {Collection, File} from "./types";
 
 export default class AttachmentApi extends AbstractApi implements I_AttachmentApi {
@@ -24,11 +24,13 @@ export default class AttachmentApi extends AbstractApi implements I_AttachmentAp
 
 	async upload(id: number, collection: string, fileList: FileList): Promise<Array<boolean>> {
 		let jobs: Array<Promise<any>> = [];
+		let headers = this.headers;
+		delete headers["Content-Type"];
 		Array.from(fileList).forEach((file) => {
 			let data = new FormData()
 			data.append('file', file)
 			data.append('collection', collection)
-			jobs.push(fetch(this.url + this.urlPostfix.upload + '/' + id, {method: "POST", headers: this.headers, body: data}).then(handleFetch));
+			jobs.push(fetch(this.url + this.urlPostfix.upload + '/' + id, {method: "POST", headers, body: data}).then(handleFetch));
 		})
 		return Promise.all(jobs);
 	}

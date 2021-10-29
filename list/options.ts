@@ -10,6 +10,7 @@ let options = {
 		right: {icon: FaIcon.s("chevron-right")},
 		left: {icon: FaIcon.s("chevron-left")},
 	},
+	fetchOptions: true,
 	api: {
 		host: "",
 		urlPostfix: {

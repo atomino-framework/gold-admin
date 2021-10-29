@@ -11,7 +11,7 @@ import {get, writable} from "svelte/store";
 import type List from "../list/list";
 import FormButton from "./form-button";
 import FormSection from "./form-section";
-
+import type Entity from "../entity-type";
 export default abstract class Form {
 
 	static buttons: Array<{ icon: FaIcon, action: (form: Form) => void, onlyIfExists: boolean }> = [];
@@ -37,10 +37,6 @@ export default abstract class Form {
 
 	abstract build(): void;
 
-	// public $modal: Writable<{ component: typeof SvelteComponent, props: any } | null> = writable(null);
-	// public openModal(component: typeof SvelteComponent, props: {} = {}) { this.$modal.set({component, props});}
-	// public closeModal() { this.$modal.set(null);}
-
 	public sections: Array<FormSection> = [];
 	public page: AbstractPage | null = null;
 
@@ -57,7 +53,7 @@ export default abstract class Form {
 	public get id(): number | null {return get(this.$id) }
 	public set changed(state: boolean) {
 		this.$isChanged.set(state);
-		this.setTitle(get(this.$item));
+		this.setTitle(get(this.$item), this.id);
 	}
 	public $errors: Writable<Array<any>> = writable([]);
 	public set errors(errors: Array<any> | null) {
@@ -76,8 +72,10 @@ export default abstract class Form {
 		return section;
 	}
 
-	public setTitle(item: any) { this.title = this.id === null ? "new" : this.id.toString(); }
+	public setTitle(item: Entity, id:number|string|null) { this.title = (this.constructor as typeof Form).setTitle(item, id); }
 
+	public static setTitle(item: Entity, id:number|string|null):string{return  id === null ? "new" : id.toString();}
+	
 	public async attached(page: AbstractPage) {
 		this.page = page;
 		await this.loadItem();
@@ -88,7 +86,7 @@ export default abstract class Form {
 		try {
 			let data = await (this.id === null ? this.api!.blank() : this.api!.get(this.id));
 			this.$item.set(data);
-			this.setTitle(data);
+			this.setTitle(data, this.id);
 			this.page!.loading = false;
 			this.changed = false;
 			this.errors = null;
@@ -156,15 +154,26 @@ export default abstract class Form {
 
 }
 
-export function form(icon: FaIcon, api: I_FormApi | string) {
+export function form(
+	icon: FaIcon,
+	api: I_FormApi | string,
+	setTitle:((item:Entity, id:number|string|null)=>string)|null = null
+) {
 	return function (constructor: typeof Form) {
+		if(setTitle !== null){
+			Object.defineProperty(constructor, 'setTitle', {value: setTitle, writable: true});
+		}
 		Object.defineProperty(constructor, 'icon', {value: icon, writable: true});
 		Object.defineProperty(constructor, 'list', {value: [], writable: true});
 		Object.defineProperty(constructor, 'api', {value: typeof api === "string" ? new FormApi(api) : api, writable: true});
 	}
 }
 
-export function button(icon: FaIcon | { icon: FaIcon, action: (form: Form) => void, onlyIfExists: boolean }, action: ((form: Form) => void) | null = null, onlyIfExists: boolean = false) {
+export function button(
+	icon: FaIcon | { icon: FaIcon, action: (form: Form) => void, onlyIfExists: boolean },
+	action: ((form: Form) => void) | null = null,
+	onlyIfExists: boolean = false
+) {
 	return function (constructor: typeof Form) {
 		if (!constructor.hasOwnProperty('buttons')) Object.defineProperty(constructor, 'buttons', {value: [], writable: true});
 		if (icon instanceof FaIcon && action !== null) constructor.buttons.push({icon, action, onlyIfExists});

@@ -1,3 +1,4 @@
+import {convertToOptionSet, valueLabelPair} from "gold-admin/form-input/option-set.interface";
 import OptionSetApi from "../option-set-api";
 import type I_OptionSetApi from "../option-set-api.interface";
 import type I_OptionSet from "../option-set.interface";
@@ -9,8 +10,8 @@ import Component from "./component.svelte"
 export default class CheckboxesControl extends AbstractControl {
 
 	public options: Array<I_OptionSet> = [];
-	setOptions(options: Array<I_OptionSet>): this {
-		this.options = options;
+	setOptions(options: Array<I_OptionSet>|valueLabelPair|Array<string>): this {
+		this.options = convertToOptionSet(options);
 		return this;
 	}
 

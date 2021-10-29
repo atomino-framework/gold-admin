@@ -1,3 +1,4 @@
+import type Entity from "gold-admin/entity-type";
 import options from "./options";
 import AbstractApi from "../abstract-api";
 import OAuthStore from "../auth/oauth-store";
@@ -18,10 +19,10 @@ export default class FormApi extends AbstractApi implements I_FormApi {
 		super(url, options.api.headers, options.api.host, options.api.urlPostfix);
 	}
 
-	async get(id: number): Promise<Object> {
+	async get(id: number): Promise<Entity> {
 		return fetch(this.url + this.urlPostfix.get + "/" + id, {method: "POST", headers: this.headers}).then(handleFetch);
 	}
-	async blank(): Promise<Object> {
+	async blank(): Promise<Entity> {
 		return fetch(this.url + this.urlPostfix.blank, {method: "POST", headers: this.headers}).then(handleFetch);
 	}
 	async create(item: any): Promise<false | null | number> {
