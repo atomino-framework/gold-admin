@@ -1,4 +1,4 @@
-import {convertToOptionSet, valueLabelPair} from "gold-admin/form-input/option-set.interface";
+import {convertToOptionSet, valueLabelPair} from "../../form-input/option-set.interface";
 import OptionSetApi from "../option-set-api";
 import AbstractInput, {component, layout} from "../abstract-control";
 import type I_OptionSetApi from "../option-set-api.interface";

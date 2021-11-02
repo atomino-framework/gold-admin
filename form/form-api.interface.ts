@@ -1,4 +1,4 @@
-import type Entity from "gold-admin/entity-type";
+import type Entity from "../entity-type";
 
 export default interface I_FormApi {
 	get(id: number): Promise<Entity>;

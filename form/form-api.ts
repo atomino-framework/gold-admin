@@ -1,4 +1,4 @@
-import type Entity from "gold-admin/entity-type";
+import type Entity from "../entity-type";
 import options from "./options";
 import AbstractApi from "../abstract-api";
 import OAuthStore from "../auth/oauth-store";

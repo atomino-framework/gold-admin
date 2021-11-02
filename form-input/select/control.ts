@@ -1,5 +1,5 @@
-import {convertToOptionSet} from "gold-admin/form-input/option-set.interface";
-import type {valueLabelPair} from "gold-admin/form-input/option-set.interface";
+import {convertToOptionSet} from "../../form-input/option-set.interface";
+import type {valueLabelPair} from "../../form-input/option-set.interface";
 import OptionSetApi from "../option-set-api";
 import AbstractInput, {component, layout} from "../abstract-control";
 import Component from "./component.svelte"
