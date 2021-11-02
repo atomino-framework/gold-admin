@@ -12,12 +12,13 @@
 	export let pageManager:PageManager;
 	export let listManager:ListManager;
 	export let menu: Array<MenuItem>;
+	export let userMenu: Array<MenuItem>;
 	export let authApi:I_AuthApi;
 
 	let modals = modalManager.modals;
 </script>
 
-<Header menu={menu} authApi={authApi}/>
+<Header menu={menu} userMenu={userMenu} authApi={authApi}/>
 
 <div class="columns m-1">
 	<ListContainer listManager={listManager}/>

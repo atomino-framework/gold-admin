@@ -1,25 +1,28 @@
 <script lang="ts">
-	import type I_AuthApi from "./auth/auth-api.interface";
-	import ListManager from "./app/list-manager";
-	import MenuItem from "./app/menu-item";
-	import options from "./options";
-	import PageManager from "./app/page-manager";
-	import user from "./auth/user";
-	import Favicon from "./favicon"
+	import {get} from "svelte/store";
 
 	import AppFrame from "./app/components/app-frame.svelte";
-	import Login from "./auth/components/login.svelte"
+	import ListManager from "./app/list-manager";
+	import MenuItem from "./app/menu-item";
+	import PageManager from "./app/page-manager";
+	import type I_AuthApi from "./auth/auth-api.interface";
+	import Login from "./auth/components/login.svelte";
+	import user from "./auth/user";
+	import type I_User from "./auth/user.interface";
+	import Favicon from "./favicon"
+	import options from "./options";
 
 	export let pageManager: PageManager;
 	export let listManager: ListManager;
-	export let menu: Array<MenuItem>;
 	export let authApi: I_AuthApi;
+	export let menu:  ((user: I_User | null) => Array<MenuItem>) | Array<MenuItem> = [];
+	export let userMenu: ((user: I_User | null) => Array<MenuItem>) | Array<MenuItem> = [];
 
 	pageManager.listManager = listManager;
 	listManager.pageManager = pageManager;
 
 	window.document.title = options.app.title;
-	if(options.app.favicon !== ""){
+	if (options.app.favicon !== "") {
 		Favicon.replace(options.app.favicon);
 	}
 	window.document.body.style.backgroundColor = options.app.background.color;
@@ -33,7 +36,7 @@
 	{#if $user === null}
 		<Login authApi={authApi}/>
 	{:else}
-		<AppFrame pageManager={pageManager} listManager={listManager} menu={menu} authApi={authApi}/>
+		<AppFrame pageManager={pageManager} listManager={listManager} menu={typeof menu === 'function' ? menu(get(user)) : menu} userMenu={typeof userMenu === 'function' ? userMenu(get(user)) : userMenu} authApi={authApi}/>
 	{/if}
 {/await}
 

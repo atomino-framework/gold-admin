@@ -67,8 +67,8 @@
 </div>
 
 <style lang="scss">
-	.card:not(.inactive){
-		opacity:.8;
+	.card{
+		background-color: rgba(0,0,0,.7);
 	}
 	.card.inactive {
 		opacity: .6;
@@ -77,6 +77,10 @@
 		font-size: 11px;
 	}
 
+	table{
+		background-color: transparent;
+
+	}
 	table.table td {
 		border: 0;
 		border-top: 1px dotted #333;
