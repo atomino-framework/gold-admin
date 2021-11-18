@@ -32,10 +32,9 @@ export default abstract class Form {
 		for (let button of (this.constructor as typeof Form).buttons) {
 			this.addButton(new FormButton(button.icon, () => button.action(this), button.onlyIfExists))
 		}
-		this.build();
 	}
 
-	abstract build(): void;
+	abstract build(data:any): void;
 
 	public sections: Array<FormSection> = [];
 	public page: AbstractPage | null = null;
@@ -85,6 +84,8 @@ export default abstract class Form {
 		this.page!.loading = true;
 		try {
 			let data = await (this.id === null ? this.api!.blank() : this.api!.get(this.id));
+			this.build(data);
+
 			this.$item.set(data);
 			this.setTitle(data, this.id);
 			this.page!.loading = false;

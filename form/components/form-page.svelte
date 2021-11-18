@@ -22,11 +22,13 @@
 
 <Header loading={loading} form={form}/>
 
+{#if !$loading}
 <div class="columns m-0 p-0 is-multiline">
 	{#each form.sections as section}
 		<Section section={section} item={item} onChange={()=>form.changed=true} errors={errors} page={page}/>
 	{/each}
 </div>
+	{/if}
 
 <!--{#if $modal !== null}-->
 <!--	<svelte:component {...$modal.props} this={$modal.component} form={form}/>-->
