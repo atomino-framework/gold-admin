@@ -24,10 +24,7 @@ let options = {
 		},
 		headers:{},
 		responseType: FormApiResponseType.BASIC,
-		complexResponseKeys:{
-			item: "item",
-			options: "options"
-		}
+		responseTypeHeader: "X-Gold-Form-Response-Type",
 	}
 };
 

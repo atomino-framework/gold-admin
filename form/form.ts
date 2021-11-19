@@ -83,23 +83,12 @@ export default abstract class Form {
 	public async loadItem(): Promise<any> {
 		this.page!.loading = true;
 		try {
-			let data = await (this.id === null ? this.api!.blank() : this.api!.get(this.id));
+			let res = await (this.id === null ? this.api!.blank() : this.api!.get(this.id));
 
-			let opt:any;
-			let item:any;
+			this.build(res.item, res.options);
 
-			if(options.api.responseType === FormApiResponseType.COMPLEX){
-				item = data[options.api.complexResponseKeys.item];
-				opt = data[options.api.complexResponseKeys.options];
-			}else{
-				opt = null;
-				item = data;
-			}
-			
-			this.build(item, opt);
-
-			this.$item.set(item);
-			this.setTitle(item, this.id);
+			this.$item.set(res.item);
+			this.setTitle(res.item, this.id);
 			this.page!.loading = false;
 			this.changed = false;
 			this.errors = null;
