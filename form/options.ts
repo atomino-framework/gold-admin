@@ -1,5 +1,10 @@
 import FaIcon from "../fa-icon";
 
+export enum FormApiResponseType {
+	BASIC = 1,
+	COMPLEX
+}
+
 let options = {
 	loading: {icon: FaIcon.s("spinner-third").spin()},
 	button: {
@@ -17,7 +22,12 @@ let options = {
 			update: "/update",
 			delete: "/delete",
 		},
-		headers:{}
+		headers:{},
+		responseType: FormApiResponseType.BASIC,
+		complexResponseKeys:{
+			item: "item",
+			options: "options"
+		}
 	}
 };
 

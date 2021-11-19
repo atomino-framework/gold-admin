@@ -1,7 +1,7 @@
 import FormApi from "./form-api";
 import Confirm from "./components/confirm.svelte";
 import type I_FormApi from "./form-api.interface";
-import options from "./options";
+import options, {FormApiResponseType} from "./options";
 import FaIcon from "../fa-icon";
 import {Modal} from "../app/modal-manager";
 import type AbstractPage from "../app/abstract-page";
@@ -34,7 +34,7 @@ export default abstract class Form {
 		}
 	}
 
-	abstract build(data:any): void;
+	abstract build(item:any, options:any): void;
 
 	public sections: Array<FormSection> = [];
 	public page: AbstractPage | null = null;
@@ -84,10 +84,22 @@ export default abstract class Form {
 		this.page!.loading = true;
 		try {
 			let data = await (this.id === null ? this.api!.blank() : this.api!.get(this.id));
-			this.build(data);
 
-			this.$item.set(data);
-			this.setTitle(data, this.id);
+			let opt:any;
+			let item:any;
+
+			if(options.api.responseType === FormApiResponseType.COMPLEX){
+				item = data[options.api.complexResponseKeys.item];
+				opt = data[options.api.complexResponseKeys.options];
+			}else{
+				opt = null;
+				item = data;
+			}
+			
+			this.build(item, opt);
+
+			this.$item.set(item);
+			this.setTitle(item, this.id);
 			this.page!.loading = false;
 			this.changed = false;
 			this.errors = null;
@@ -100,8 +112,8 @@ export default abstract class Form {
 		this.page!.loading = true;
 		let item = get(this.$item);
 		try {
-			let id1 = await (this.id === null ? this.api!.create(item) : this.api!.update(this.id, item));
-			if (typeof id1 === "number") this.id = id1;
+			let id = await (this.id === null ? this.api!.create(item) : this.api!.update(this.id, item));
+			if (typeof id === "number") this.id = id;
 			toast.success("Item saved");
 			this.reloadList();
 			return this.loadItem();
