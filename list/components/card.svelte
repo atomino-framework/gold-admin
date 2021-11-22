@@ -29,7 +29,17 @@
 			{/if}
 
 			<div class="media-content">
-				<div class="is-size-7 has-text-weight-bold has-text-white">{card.title}</div>
+				<div class="is-size-7 has-text-weight-bold has-text-white">
+					{#if card.icon}
+						{#if card.icon instanceof Array}
+							{#each card.icon as icon}
+								<span class="icon list-icon">{@html icon.tag}</span>
+							{/each}
+						{:else }
+							<span class="icon list-icon">{@html card.icon.tag}</span>
+						{/if}
+					{/if}
+					{card.title}</div>
 				<div class="card-subtitle">id: {card.id}</div>
 				{#if (card.subtitle)}
 					<div class="card-subtitle">{card.subtitle}</div>
@@ -67,6 +77,12 @@
 </div>
 
 <style lang="scss">
+	.list-icon{
+		border:1px dotted #fff5 ;
+		border-radius: 6px;
+		background-color: #0003;
+		margin-right: 3px;
+	}
 	.card{
 		background-color: rgba(0,0,0,.7);
 	}
