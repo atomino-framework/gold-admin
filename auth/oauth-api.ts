@@ -30,7 +30,7 @@ export default class OAuthApi extends AbstractApi implements I_AuthApi {
 					prevUser = user;
 					return res;
 				});
-				if (prevUser === null && res !== null && this.onLogin !== null) this.onLogin();
+				if (prevUser === null && res !== null && this.onLogin !== null) this.onLogin(user);
 				return res;
 			}).catch(() => user.set(null));
 	}

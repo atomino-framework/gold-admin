@@ -17,7 +17,7 @@
 		<div class="navbar-brand">
 			<span class="navbar-item" href="/">
 				<span class="image mr-2">
-					<img src={options.favicon} width="28" height="28" alt={options.title}>
+					<img class="logo" src={options.favicon} alt={options.title}>
 				</span>
 				<span class="is-size-7 has-text-weight-bold has-text-white	">
 					{options.title}
@@ -98,3 +98,10 @@
 		</div>
 	</div>
 </nav>
+
+<style lang="scss">
+	.logo{
+		width: 28px;
+		height: 28px;
+	}
+</style>
