@@ -14,7 +14,7 @@
 	export let onChange: Function;
 
 	let field = control.field
-
+	let searchString = "";
 	let optionList: Array<I_OptionSet> = [];
 	let value: null | number | string | Array<number | string> = control.multi ? [] : null;
 	let valueList: Array<I_OptionSet> = [];
@@ -63,6 +63,8 @@
 		} else {
 			update(id);
 		}
+		searchString = "";
+		optionList = [];
 		onChange();
 	}
 
@@ -86,7 +88,7 @@
 
 </script>
 
-<Input type="text" size="is-small" icon={options.combobox.search.icon.icon} iconPack={options.combobox.search.icon.pack} on:input={onInput} placeholder="search"/>
+<Input type="text" size="is-small" icon={options.combobox.search.icon.icon} iconPack={options.combobox.search.icon.pack} on:input={onInput} bind:value={searchString} placeholder="search"/>
 {#if optionList.length}
 	<div class="options is-size-7 p-0 has-background-black">
 		{#each optionList as item (item.value)}
