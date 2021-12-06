@@ -1,11 +1,11 @@
 export default class Favicon {
 
-	static createWithSvg(svg:string){
+	static createWithSvg(svg: string) {
 		return 'data:image/svg+xml,' + svg;
 	}
 
 	static createWithEmoji(emoji: string): string {
-		return Favicon.createWithSvg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">' + emoji + '</text></svg>');
+		return Favicon.createWithSvg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><text y=".9em" font-size="100">' + emoji + '</text></svg>');
 	}
 
 	static replace(url: string) {
@@ -17,5 +17,5 @@ export default class Favicon {
 		}
 		link.setAttribute("href", url);
 	}
-
 }
+

@@ -24,7 +24,7 @@
 				{options.title}
 			</span>
 		</span>
-		<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" on:click={()=>isHamburgerActive = !isHamburgerActive}>
+		<a role="button" class="navbar-burger burger" class:is-active={isHamburgerActive} aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" on:click={()=>isHamburgerActive = !isHamburgerActive}>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>

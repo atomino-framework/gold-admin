@@ -4,7 +4,7 @@ export default class FaIcon {
 	static l(icon: string): FaIcon {return new FaIcon('fal', icon);}
 	static b(icon: string): FaIcon {return new FaIcon('fab', icon);}
 	static d(icon: string): FaIcon {return new FaIcon('fad', icon);}
-	
+
 	constructor(public pack: string, public icon: string) {
 		if (this.icon.substr(0, 3) === 'fa-') this.icon = this.icon.substr(3);
 	}
@@ -12,6 +12,7 @@ export default class FaIcon {
 	public animation: string | null = null;
 	spin() { this.animation = "spin"; return this; }
 	pulse() { this.animation = "pulse"; return this; }
+	props:{[key:string]:any} = {}
 
 	protected faa:FaAnim|null = null;
 	public anim:any = {
@@ -36,6 +37,14 @@ export default class FaIcon {
 	get tag():string{ return '<i class="'+this.toString()+'"/>'; }
 	get Icon():string{ return '<span class="icon">' + this.tag + '</span>'; }
 	Tag(...classes:Array<string>):string{	return '<i class="'+this.toString()+' '+classes.join(' ')+'"/>';}
+
+	getProp(key:string):any{
+		return this.props[key];
+	}
+	prop(key:string, value:any):this{
+		this.props[key] = value;
+		return this;
+	}
 }
 
 class FaAnim{

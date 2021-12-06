@@ -23,7 +23,7 @@
 			{#if (card.avatar)}
 				<div class="media-left">
 					<figure class="image is-48x48 m-0">
-						<img src={card.avatar} alt="" loading="lazy">
+						<img src={card.avatar} alt="" class="avatar" loading="lazy">
 					</figure>
 				</div>
 			{/if}
@@ -33,7 +33,7 @@
 					{#if card.icon}
 						{#if card.icon instanceof Array}
 							{#each card.icon as icon}
-								<span class="icon list-icon">{@html icon.tag}</span>
+								<span class="icon list-icon" style={ icon.props.color ? "color:"+icon.props.color: ""}>{@html icon.tag}</span>
 							{/each}
 						{:else }
 							<span class="icon list-icon">{@html card.icon.tag}</span>
@@ -83,6 +83,10 @@
 		background-color: #0003;
 		margin-right: 3px;
 	}
+	.avatar{
+		border-radius: 6px;
+	}
+
 	.card{
 		background-color: rgba(0,0,0,.7);
 	}

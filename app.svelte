@@ -15,17 +15,23 @@
 	export let pageManager: PageManager;
 	export let listManager: ListManager;
 	export let authApi: I_AuthApi;
-	export let menu:  ((user: I_User | null) => Array<MenuItem>) | Array<MenuItem> = [];
+	export let menu: ((user: I_User | null) => Array<MenuItem>) | Array<MenuItem> = [];
 	export let userMenu: ((user: I_User | null) => Array<MenuItem>) | Array<MenuItem> = [];
 
 	pageManager.listManager = listManager;
 	listManager.pageManager = pageManager;
 
 	window.document.title = options.app.title;
-	if (options.app.favicon !== "") {
-		Favicon.replace(options.app.favicon);
-	}
+	if (options.app.favicon !== "") Favicon.replace(options.app.favicon);
 	window.document.body.style.backgroundColor = options.app.background.color;
+	let themeColorMeta = window.document.querySelector("meta[rel~='theme-color']");
+	if (!themeColorMeta) {
+		themeColorMeta = window.document.createElement('meta');
+		themeColorMeta.setAttribute("name", "theme-color");
+		window.document.getElementsByTagName('head')[0].appendChild(themeColorMeta);
+	}
+	themeColorMeta.setAttribute("content", options.app.background.color);
+
 	window.document.body.style.backgroundImage = 'url("' + options.app.background.imageUrl + '")';
 
 	let auth = authApi.get();
@@ -73,6 +79,9 @@
 	}
 	html, body {
 		min-height: 100%;
+		width: 100%;
+		position: fixed;
+		overflow: hidden;
 	}
 	.border-0 {border: 0 !important;}
 	.sticky-grid { height: calc(100vh - 72px);

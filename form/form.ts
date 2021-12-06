@@ -84,7 +84,7 @@ export default abstract class Form {
 		this.page!.loading = true;
 		try {
 			let res = await (this.id === null ? this.api!.blank() : this.api!.get(this.id));
-
+			this.sections = [];
 			this.build(res.item, res.options);
 
 			this.$item.set(res.item);
