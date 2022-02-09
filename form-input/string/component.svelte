@@ -7,6 +7,8 @@
 	export let control: Control;
 	export let item;
 	export let onChange: Function;
+	let field = control.field;
+
 </script>
 
-<Input type="text" size="is-small" bind:value={$item[control.field]} on:change={onChange}/>
+<Input type="text" size="is-small" bind:value={$item[field]} on:change={onChange}/>

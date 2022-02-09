@@ -12,6 +12,7 @@ import type List from "../list/list";
 import FormButton from "./form-button";
 import FormSection from "./form-section";
 import type Entity from "../entity-type";
+
 export default abstract class Form {
 
 	static buttons: Array<{ icon: FaIcon, action: (form: Form) => void, onlyIfExists: boolean }> = [];
@@ -23,7 +24,10 @@ export default abstract class Form {
 	public api: I_FormApi | null = null;
 	public buttons: Array<FormButton> = [];
 
-	constructor(id: number | string | null = null) {
+	private pageID:string = "";
+
+	constructor(id: number | string | null = null, protected initialData: any = null) {
+		this.pageID = Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
 		if (typeof id === "string") id = parseInt(id);
 		this.id = id;
 		this.list = (this.constructor as typeof Form).list;
@@ -34,7 +38,7 @@ export default abstract class Form {
 		}
 	}
 
-	abstract build(item:any, options:any): void;
+	abstract build(item: any, options: any): void;
 
 	public sections: Array<FormSection> = [];
 	public page: AbstractPage | null = null;
@@ -60,7 +64,7 @@ export default abstract class Form {
 		this.$errors.set(errors);
 	}
 
-	get pageId(): string { return 'entity-' + this.constructor.name + (get(this.$id) === null ? '' : '-' + get(this.$id));}
+	get pageId(): string { return 'entity-' + this.constructor.name + (get(this.$id) === null ? this.pageID : '-' + get(this.$id));}
 	set loading(loading: boolean) {this.page && (this.page.loading = false);}
 
 	public addButton(button: FormButton) {this.buttons.push(button);}
@@ -71,10 +75,10 @@ export default abstract class Form {
 		return section;
 	}
 
-	public setTitle(item: Entity, id:number|string|null) { this.title = (this.constructor as typeof Form).setTitle(item, id); }
+	public setTitle(item: Entity, id: number | string | null) { this.title = (this.constructor as typeof Form).setTitle(item, id); }
 
-	public static setTitle(item: Entity, id:number|string|null):string{return  id === null ? "new" : id.toString();}
-	
+	public static setTitle(item: Entity, id: number | string | null): string {return id === null ? "new" : id.toString();}
+
 	public async attached(page: AbstractPage) {
 		this.page = page;
 		await this.loadItem();
@@ -84,6 +88,9 @@ export default abstract class Form {
 		this.page!.loading = true;
 		try {
 			let res = await (this.id === null ? this.api!.blank() : this.api!.get(this.id));
+			if (this.id === null && this.initialData !== null && typeof this.initialData === 'object') {
+				for (let key in this.initialData) res.item[key] = this.initialData[key];
+			}
 			this.sections = [];
 			this.build(res.item, res.options);
 
@@ -159,10 +166,10 @@ export default abstract class Form {
 export function form(
 	icon: FaIcon,
 	api: I_FormApi | string,
-	setTitle:((item:Entity, id:number|string|null)=>string)|null = null
+	setTitle: ((item: Entity, id: number | string | null) => string) | null = null
 ) {
 	return function (constructor: typeof Form) {
-		if(setTitle !== null){
+		if (setTitle !== null) {
 			Object.defineProperty(constructor, 'setTitle', {value: setTitle, writable: true});
 		}
 		Object.defineProperty(constructor, 'icon', {value: icon, writable: true});
