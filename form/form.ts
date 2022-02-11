@@ -40,6 +40,7 @@ export default abstract class Form {
 
 	abstract build(item: any, options: any): void;
 
+	public $sections: Writable<Array<FormSection>> = writable([]);
 	public sections: Array<FormSection> = [];
 	public page: AbstractPage | null = null;
 
@@ -72,6 +73,7 @@ export default abstract class Form {
 	public addSection(title: string | null = null, icon: FaIcon | null = null, sizes: Array<string> = ["is-full"]) {
 		let section = new FormSection(title, icon, sizes);
 		this.sections.push(section);
+		this.$sections.set(this.sections);
 		return section;
 	}
 

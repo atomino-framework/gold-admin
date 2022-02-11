@@ -64,10 +64,10 @@
 			<footer class="card-footer is-size-7">
 				{#each card.buttons as button}
 					<a href="#" class="card-footer-item p-2" on:click|stopPropagation={button.action}>
-						{#if typeof button.label === "string"}
-							{button.label}
+						{#if typeof button.icon === "string"}
+							{button.icon}
 						{:else }
-							<i class={button.label}></i>
+							<i class={button.icon}></i>
 						{/if}
 					</a>
 				{/each}
