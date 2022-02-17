@@ -11,4 +11,4 @@
 
 </script>
 
-<Input type="text" size="is-small" bind:value={$item[field]} on:change={onChange}/>
+<Input type="text" size="is-small" disabled={control.disabled} bind:value={$item[field]} on:change={onChange}/>
