@@ -45,6 +45,7 @@
 		display: flex;
 		label {
 			width: 140px;
+			flex-shrink: 0;
 		}
 	}
 	.field:not(:last-child) {

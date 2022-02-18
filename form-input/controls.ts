@@ -11,6 +11,7 @@ import SwitchControl from "./switch/control";
 import TextControl from "./text/control";
 import TimeControl from "./time/control";
 import StringControl from "./string/control";
+import TagControl from "./tag/control";
 
 export default {
 	"checkboxes": (field: string, label: string | null = null):CheckboxesControl => new CheckboxesControl(field, label),
@@ -26,4 +27,5 @@ export default {
 	"switch": (field: string, label: string | null = null):SwitchControl => new SwitchControl(field, label),
 	"text": (field: string, label: string | null = null):TextControl => new TextControl(field, label),
 	"time": (field: string, label: string | null = null):TimeControl => new TimeControl(field, label),
+	"tag": (field: string, label: string | null = null):TagControl => new TagControl(field, label),
 }
