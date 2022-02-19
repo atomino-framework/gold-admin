@@ -109,11 +109,11 @@
 
 <div class="values is-size-7">
 	{#each valueList as item (item.value)}
-		<span class="field has-addons pr-1 pt-1 m-0 is-pulled-left">
+		<div class="field has-addons pr-1 pt-1 m-0">
 			<div class="control">
 				<button on:click={()=>remove(item.value)} class="button is-danger is-small">{@html options.combobox.remove.icon.Tag('fa-fw')}</button>
 			</div>
-			<div class="control py-0 has-background-link-dark" on:dblclick={()=>Clipboard.copy(item.value)}>
+			<div class="item-label control py-0 has-background-link-dark" on:dblclick={()=>Clipboard.copy(item.value)}>
 				<span class="input px-4 is-size-7 has-text-white is-unselectable">{item.label}</span>
 			</div>
 			<div class="control py-0 has-background-link-dark" on:dblclick={()=>Clipboard.copy(item.value)}>
@@ -124,7 +124,7 @@
 					<button on:click={()=>openForm(item.value)} class="button is-link is-small">{@html options.combobox.link.icon.Tag('fa-fw')}</button>
 				</div>
 			{/if}
-		</span>
+		</div>
 	{/each}
 </div>
 
@@ -132,5 +132,8 @@
 	.options {
 		max-height: 90px;
 		overflow: auto;
+	}
+	.item-label{
+		flex-grow: 1;
 	}
 </style>

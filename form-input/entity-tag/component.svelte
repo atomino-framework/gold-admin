@@ -1,16 +1,15 @@
 <script lang="ts">
 	import type {Writable} from "svelte/store";
+	import {get, writable} from "svelte/store";
 	import type Control from "./control";
-	import type Page from "../../form/form-page";
+	import Page from "../../form/form-page";
 	import type I_OptionSet from "../../form-input/option-set.interface";
-	import {writable, get} from "svelte/store";
 	import {tick} from "svelte";
 
 	export let page: Page;
 	export let control: Control;
 	export let item: Writable<Object>;
 	export let onChange: Function;
-
 	let component;
 
 	function getFieldValue(): any { return get(item)[control.field];}
@@ -19,45 +18,44 @@
 			item[control.field] = value;
 			return item;
 		});
-		values.set(getFieldValue())
 	}
 	function getItemId() { return page.form.id; }
 
-	let values: Writable<Array<I_OptionSet>> = writable(getFieldValue());
-
 	let options = {
-		allowInsert: control.allowInsert,
-		limit: control.limit,
-		collection: control.collection,
+		form: control.form,
 		viewOnly: control.viewOnly,
+		fullWidth: control.fullWidth,
+		api: control.api!,
+		limit: (getFieldValue() instanceof Array) ? control.limit : 1
 	}
 
-	let collection = control.collection;
+
+	let searching = false;
 	let keyword: string = "";
 	let searchResult: Writable<Array<I_OptionSet>> = writable([]);
 	let selectedIndex: number = -1;
+	let values: Writable<Array<I_OptionSet>> = writable([]);
+	loadValues();
 
-	function findInCollection(value) { return collection.find((item) => item.value === value);}
-	function findInCollectionByLabel(label) { return collection.find((item) => item.label.toLowerCase() === label.toLowerCase());}
-	function searchInCollection(keyword) {
-		let found: Array<I_OptionSet> = [];
-		collection.forEach((item: I_OptionSet) => {
-			let tag = item.label.toLowerCase();
-			let kw = keyword.toLowerCase();
-			if (
-				(kw.length < 3 && tag.startsWith(kw)) ||
-				(kw.length >= 3 && tag.includes(kw))
-			) found.push(item);
-		});
-		found.sort((a, b) => a.label.localeCompare(b.label));
-		return found;
+	function isFieldValueContains(value): boolean {
+		value = parseInt(value);
+		let fieldValue = getFieldValue();
+		return (fieldValue instanceof Array) ? fieldValue.indexOf(value) !== -1 : fieldValue === value;
 	}
 
-	function isFieldValueContains(value): boolean { return getFieldValue().indexOf(value) !== -1;}
+	function openForm(id) {
+		// @ts-ignore
+		page.pageManager!.add(new Page(new (options.form)(id)));
+	}
+
+	async function loadValues(): Promise<Array<I_OptionSet>> {
+		let ids = getFieldValue();
+		let result = (ids === null || ids.length === 0) ? [] : await options.api.get(ids, getItemId());
+		values.set(result);
+	}
 
 	function scrollIntoView() {
 		let el = component.querySelector('[data-tag-index="' + selectedIndex + '"]');
-		if (el === null) return;
 		typeof el["scrollIntoViewIfNeeded"] === "function" ? el["scrollIntoViewIfNeeded"](true) : el.scrollIntoView();
 	}
 
@@ -66,16 +64,12 @@
 	async function onKeyUp(event) {
 		switch (event.key) {
 			case "Enter":
-				if (selectedIndex === -1) await insertByKeyword(keyword);
-				else {
+				if (selectedIndex !== -1){
 					let value = get(searchResult)[selectedIndex].value;
-					isFieldValueContains(value) ? remove(value) : insert(value);
+					isFieldValueContains(value) ? await remove(value) : await insert(value);
 				}
 				break;
 			case "ArrowDown":
-				if (keyword.trim() === "") {
-					searchResult.set(collection.sort((a, b) => a.label.localeCompare(b.label)))
-				}
 				let results = get(searchResult);
 				if (selectedIndex < results.length - 1) {
 					selectedIndex++;
@@ -89,26 +83,10 @@
 				}
 				break;
 			case "Escape":
-				selectedIndex = -1;
-				await tick();
-				keyword = "";
-				await search();
+				await resetSearch();
 				break;
 			default:
 				await search();
-		}
-	}
-
-	async function search() {
-		searchResult.set([]);
-		selectedIndex = -1;
-		await tick();
-		keyword = keyword.trimStart();
-		if (keyword.length > 0) {
-			let found = searchInCollection(keyword);
-			searchResult.set(found);
-		} else {
-			searchResult.set([]);
 		}
 	}
 
@@ -119,54 +97,75 @@
 		await search();
 	}
 
-	function insert(value) {
-		if (value === null) return;
+	async function search() {
+		selectedIndex = -1;
+		await tick();
+		keyword = keyword.trimStart();
+
+		if (keyword.length === 0) {
+			searchResult.set([]);
+		} else {
+			searching = true;
+			searchResult.set(await options.api.search(keyword, page.form.id));
+			searching = false
+		}
+	}
+
+	async function insert(value) {
+		value = parseInt(value);
+		if (typeof value !== "number") return;
 		if (isFieldValueContains(value)) return;
-		let fieldValue = getFieldValue();
-		if (fieldValue.length < options.limit) {
-			fieldValue.push(value);
-			setFieldValue(fieldValue);
-			searchResult.update(res => res);
-		}
-	}
 
-	async function insertByKeyword(keyword) {
-		keyword = keyword.trim();
-		let tag = findInCollectionByLabel(keyword);
-		if (typeof tag === "undefined" && options.allowInsert && keyword.length) {
-			tag = {value: keyword, label: keyword};
-			collection.push(tag);
-			await search();
+		if (options.limit === 1) {
+			setFieldValue(value);
+		} else {
+			let fieldValue = getFieldValue();
+			if (fieldValue.length < options.limit) {
+				fieldValue.push(value);
+				setFieldValue(fieldValue);
+			}
 		}
-		if (typeof tag !== "undefined") insert(tag.value);
-	}
-
-	function remove(value) {
-		if (!isFieldValueContains(value)) return;
-		let fieldValue = getFieldValue();
-		fieldValue.splice(fieldValue.indexOf(value), 1)
-		setFieldValue(fieldValue);
 		searchResult.update(res => res);
+		await loadValues();
+	}
+
+	async function remove(value) {
+		value = parseInt(value);
+		if (typeof value !== "number") return;
+		if (!isFieldValueContains(value)) return;
+
+		if (options.limit === 1) {
+			setFieldValue(null);
+		} else {
+			let fieldValue = getFieldValue();
+			fieldValue.splice(fieldValue.indexOf(value), 1)
+			setFieldValue(fieldValue);
+		}
+		searchResult.update(res => res);
+		await loadValues();
 	}
 
 </script>
+
+
 <div bind:this={component} class="box p-1 item-container is-size-7">
-	<div class="tag-container">
-		{#each $values as tag (tag)}
-			{#if findInCollection(tag)}
-				<div class="tags has-addons m-0 mr-1 mb-1">
-					<span class="tag mb-0">{findInCollection(tag).label}</span>
-					{#if !options.viewOnly}
-						<a class="tag is-dark is-delete mb-0" on:click={()=>remove(findInCollection(tag).value)}></a>
-					{/if}
-				</div>
-			{/if}
+	<div class="tag-container" class:full-width={options.fullWidth}>
+		{#each $values as valueItem (valueItem.value)}
+			<div class="tags has-addons m-0">
+				{#if options.form !== null}
+					<span on:click={()=>openForm(valueItem.value)} class="tag mb-0 is-dark has-text-primary is-clickable"><i class="fas fa-link"></i></span>
+				{/if}
+				<span class="tag mb-0 is-flex-grow-1">{valueItem.label}</span>
+				{#if !options.viewOnly}
+					<a class="tag is-dark is-delete mb-0" on:click={()=>remove(valueItem.value)}></a>
+				{/if}
+			</div>
 		{/each}
 	</div>
-	{#if !options.viewOnly}
 
+	{#if !options.viewOnly}
 		<div class="field has-addons mb-0 mt-1">
-			<div class="search-control control has-icons-left is-size-7 flex-grow">
+			<div class="search-control control has-icons-left is-size-7 flex-grow" class:is-loading={searching}>
 				<input
 						class="input is-size-7"
 						type="text"
@@ -182,7 +181,6 @@
 			</div>
 		</div>
 
-
 		{#if $searchResult.length > 0}
 			<div class="dropdown is-active">
 				<div class="dropdown-menu" id="dropdown-menu" role="menu">
@@ -193,7 +191,7 @@
 									on:click={ ()=>isFieldValueContains(tag.value) ? remove(tag.value) : insert(tag.value) }
 									class="dropdown-item is-block pr-2"
 									class:is-active={ selectedIndex === index }
-									class:has-text-primary-dark={isFieldValueContains(tag.value)}
+									class:has-text-primary-dark={ isFieldValueContains(tag.value) }
 							>{tag.label}
 								{#if isFieldValueContains(tag.value)}
 										<span class="icon is-pulled-right is-size-7">
@@ -207,8 +205,6 @@
 			</div>
 		{/if}
 	{/if}
-
-
 </div>
 
 
@@ -226,5 +222,12 @@
 	.tag-container {
 		display: flex;
 		flex-wrap: wrap;
+		gap: 0.25rem;
+		&.full-width {
+			.tags {
+				flex-grow: 1;
+				width: 100%;
+			}
+		}
 	}
 </style>

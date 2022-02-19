@@ -12,6 +12,7 @@ import TextControl from "./text/control";
 import TimeControl from "./time/control";
 import StringControl from "./string/control";
 import TagControl from "./tag/control";
+import EntityTagControl from "./entity-tag/control";
 
 export default {
 	"checkboxes": (field: string, label: string | null = null):CheckboxesControl => new CheckboxesControl(field, label),
@@ -28,4 +29,5 @@ export default {
 	"text": (field: string, label: string | null = null):TextControl => new TextControl(field, label),
 	"time": (field: string, label: string | null = null):TimeControl => new TimeControl(field, label),
 	"tag": (field: string, label: string | null = null):TagControl => new TagControl(field, label),
+	"entityTag": (field: string, label: string | null = null):EntityTagControl => new EntityTagControl(field, label),
 }

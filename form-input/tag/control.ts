@@ -11,6 +11,12 @@ export default class TagControl extends AbstractInput {
 	public initialData: any = null;
 	public collection: Array<I_OptionSet> = [];
 	public allowInsert: boolean = false;
+	public viewOnly: boolean = false;
+
+	setViewOnly(viewOnly: boolean = true) {
+		this.viewOnly = viewOnly;
+		return this;
+	}
 
 	setAllowInsert(allowInsert: boolean = true) {
 		this.allowInsert = allowInsert;
