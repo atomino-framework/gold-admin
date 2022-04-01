@@ -17,6 +17,7 @@
 	export let authApi: I_AuthApi;
 	export let menu: ((user: I_User | null) => Array<MenuItem>) | Array<MenuItem> = [];
 	export let userMenu: ((user: I_User | null) => Array<MenuItem>) | Array<MenuItem> = [];
+	export let LoginPage = Login;
 
 	pageManager.listManager = listManager;
 	listManager.pageManager = pageManager;
@@ -40,7 +41,7 @@
 {#await auth}
 {:then r}
 	{#if $user === null}
-		<Login authApi={authApi}/>
+		<LoginPage authApi={authApi}/>
 	{:else}
 		<AppFrame pageManager={pageManager} listManager={listManager} menu={typeof menu === 'function' ? menu(get(user)) : menu} userMenu={typeof userMenu === 'function' ? userMenu(get(user)) : userMenu} authApi={authApi}/>
 	{/if}
