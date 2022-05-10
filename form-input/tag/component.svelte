@@ -13,24 +13,37 @@
 
 	let component;
 
-	function getFieldValue(): any { return get(item)[control.field];}
-	function setFieldValue(value: any) {
-		item.update(item => {
-			item[control.field] = value;
-			return item;
-		});
-		values.set(getFieldValue())
-	}
-	function getItemId() { return page.form.id; }
-
-	let values: Writable<Array<I_OptionSet>> = writable(getFieldValue());
 
 	let options = {
 		allowInsert: control.allowInsert,
 		limit: control.limit,
 		collection: control.collection,
 		viewOnly: control.viewOnly,
+		type: control.type
 	}
+	let values: Writable<Array<I_OptionSet>> = writable(getFieldValue());
+
+	function getFieldValue(): any {
+		let value = get(item)[control.field];
+		if (options.type === "string") {
+			if (value === null || typeof value === "undefined" || value.length === 0) value = [];
+			else value = [value];
+		}
+		return value;
+	}
+	function setFieldValue(value: any) {
+		item.update(item => {
+			if (options.type === "string") {
+				item[control.field] = value.length ? value[0] : "";
+			} else{
+				item[control.field] = value;
+			}
+			return item;
+		});
+		values.set(getFieldValue())
+	}
+	function getItemId() { return page.form.id; }
+
 
 	let collection = control.collection;
 	let keyword: string = "";
@@ -123,6 +136,10 @@
 		if (value === null) return;
 		if (isFieldValueContains(value)) return;
 		let fieldValue = getFieldValue();
+		if (options.limit === 1) {
+			setFieldValue([value]);
+			searchResult.update(res => res);
+		}
 		if (fieldValue.length < options.limit) {
 			fieldValue.push(value);
 			setFieldValue(fieldValue);

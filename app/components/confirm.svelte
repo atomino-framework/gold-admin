@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type Form from "../form";
 	import Modal from "../../app/components/modal.svelte"
 	import {SvelteComponent} from "svelte";
 
@@ -10,8 +9,6 @@
 	export let full = false;
 	export let close = false;
 	export let modal:Modal;
-
-	export let form: Form;
 </script>
 
 
@@ -20,19 +17,19 @@
 		<header class="modal-card-head p-3 px-4">
 			<p class="modal-card-title is-size-6 has-text-weight-bold">{title}</p>
 			{#if close}
-				<button class="delete" aria-label="close" on:click={()=>form.closeModal()}></button>
+				<button class="delete" aria-label="close" on:click={()=>modal.close()}></button>
 			{/if}
 		</header>
 		<section class="modal-card-body has-background-black-bis">
 			{#if typeof content === "string"}
 				{content}
 			{:else }
-				<svelte:component this={content} {...props} form={form}/>
+				<svelte:component this={content} {...props}/>
 			{/if}
 		</section>
 		<footer class="modal-card-foot is-justify-content-center p-2">
 			{#each buttons as button}
-				<button class="button is-small {button.style}" on:click={()=>button.action()}>{button.label}</button>
+				<button class="button is-small {button.style}" on:click={()=>button.action(modal)}>{button.label}</button>
 			{/each}
 		</footer>
 	</div>

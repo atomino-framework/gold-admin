@@ -1,5 +1,5 @@
 import FormApi from "./form-api";
-import Confirm from "./components/confirm.svelte";
+import Confirm from "../app/components/confirm.svelte";
 import type I_FormApi from "./form-api.interface";
 import options, {FormApiResponseType} from "./options";
 import FaIcon from "../fa-icon";
@@ -24,7 +24,7 @@ export default abstract class Form {
 	public api: I_FormApi | null = null;
 	public buttons: Array<FormButton> = [];
 
-	private pageID:string = "";
+	private pageID: string = "";
 
 	constructor(id: number | string | null = null, protected initialData: any = null) {
 		this.pageID = Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
@@ -84,6 +84,10 @@ export default abstract class Form {
 		await this.loadItem();
 	}
 
+	loadConverter(item: any) {return item;}
+	saveConverter(item: any) {return item;}
+
+
 	public async loadItem(): Promise<any> {
 		this.page!.loading = true;
 		try {
@@ -92,6 +96,7 @@ export default abstract class Form {
 				for (let key in this.initialData) res.item[key] = this.initialData[key];
 			}
 			this.sections = [];
+			res.item = this.loadConverter(res.item);
 			this.build(res.item, res.options);
 
 			this.$item.set(res.item);
@@ -107,11 +112,13 @@ export default abstract class Form {
 	public async saveItem(): Promise<any> {
 		this.page!.loading = true;
 		let item = get(this.$item);
+		item = this.saveConverter(item);
 		try {
 			let id = await (this.id === null ? this.api!.create(item) : this.api!.update(this.id, item));
 			if (typeof id === "number") this.id = id;
 			toast.success("Item saved");
 			this.reloadList();
+			console.log("LOAD")
 			return this.loadItem();
 		} catch (e: any) {
 			if (e.code === 422) this.errors = e.messages;
@@ -122,20 +129,19 @@ export default abstract class Form {
 
 	public async deleteItem(): Promise<boolean> {
 
-		let modal = new Modal(Confirm, {
+		new Modal(Confirm, {
 			title: "Are you sure?",
 			content: "Do you really want to delete this item?",
-			form: this,
 			buttons: [
 				{
 					label: "Cancel",
 					style: "is-primary",
-					action: () => {modal.close()}
+					action: (modal: Modal) => {modal.close()}
 				},
 				{
 					label: "Delete",
 					style: "is-danger",
-					action: async () => {
+					action: async (modal: Modal) => {
 						modal.close();
 						this.page!.loading = true;
 						if (typeof this.id !== 'number') throw "ERROR";
@@ -150,8 +156,7 @@ export default abstract class Form {
 					}
 				}
 			]
-		});
-		modal.open();
+		}).open();
 		return true;
 	}
 
