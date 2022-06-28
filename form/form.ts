@@ -9,6 +9,7 @@ import toast from "../toast";
 import type {Writable} from "svelte/store";
 import {get, writable} from "svelte/store";
 import type List from "../list/list";
+import type AbstractList from "../app/abstract-list";
 import FormButton from "./form-button";
 import FormSection from "./form-section";
 import type Entity from "../entity-type";
@@ -118,7 +119,6 @@ export default abstract class Form {
 			if (typeof id === "number") this.id = id;
 			toast.success("Item saved");
 			this.reloadList();
-			console.log("LOAD")
 			return this.loadItem();
 		} catch (e: any) {
 			if (e.code === 422) this.errors = e.messages;
@@ -162,7 +162,7 @@ export default abstract class Form {
 
 	protected reloadList() {
 		for (let list of this.list) {
-			(this.page!.pageManager!.listManager!.getList(list.id) as List)?.reload();
+			(this.page!.pageManager!.listManager!.getList(list.id) as AbstractList)?.reload();
 		}
 	}
 

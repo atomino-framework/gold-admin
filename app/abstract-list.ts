@@ -9,4 +9,5 @@ export default abstract class AbstractList {
 	}
 	abstract get component(): typeof SvelteComponent;
 	abstract get id(): string;
+	abstract reload():void;
 }
