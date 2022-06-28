@@ -137,7 +137,8 @@ export function cardComponent(component: typeof SvelteComponent) {
 
 export function list(
 	title: string,
-	icon: FaIcon, api: I_ListApi | string,
+	icon: FaIcon,
+	api: I_ListApi | string,
 	form: typeof Form,
 	listenToForms: Array<typeof Form> = [],
 	fetchOptions: boolean | null = null

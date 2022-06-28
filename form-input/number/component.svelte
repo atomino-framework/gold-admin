@@ -53,10 +53,10 @@
 		</div>
 	</div>
 	<div class="control">
-		<button on:click={()=>{input.stepUp();$item[control.field] = input.value;}} class="button is-primary is-small">{@html options.input.number.up.icon.tag}</button>
+		<button on:click={()=>{input.stepUp();$item[control.field] = input.value;}} class="button is-primary is-small">{@html options.number.up.icon.tag}</button>
 	</div>
 	<div class="control">
-		<button on:click={()=>{input.stepDown();$item[control.field] = input.value;}} class="button is-primary is-small">{@html options.input.number.down.icon.tag}</button>
+		<button on:click={()=>{input.stepDown();$item[control.field] = input.value;}} class="button is-primary is-small">{@html options.number.down.icon.tag}</button>
 	</div>
 </div>
 

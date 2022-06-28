@@ -48,7 +48,7 @@
 {/await}
 
 <style lang="scss" global>
-	@import "@fortawesome/fontawesome-free/scss/variables";
+//	@import "@fortawesome/fontawesome-free/scss/variables";
 	$fa-font-path: "/~fonts/fontawesome-free";
 	@import "@fortawesome/fontawesome-free/scss/brands";
 	@import "@fortawesome/fontawesome-free/scss/solid";
