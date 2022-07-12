@@ -12,6 +12,7 @@ let options = {
 	},
 	tab: {
 		close: {icon: FaIcon.s('times')},
+		pinned: {icon: FaIcon.s('thumbtack')},
 		changed: {icon: FaIcon.s('dot-circle')},
 		loading: {icon: FaIcon.s("spinner-third").spin()}
 	},

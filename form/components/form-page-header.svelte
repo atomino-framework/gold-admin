@@ -56,6 +56,7 @@
 		}
 		.area-icon {
 			grid-area: icon;
+			cursor: alias;
 		}
 		line-height: 1.2;
 		display: grid;
